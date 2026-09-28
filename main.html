@@ -1,0 +1,1017 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>ErgoSense AI</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap">
+<style>
+:root{--bg:#F4F7FA;--surface:#FFFFFF;--surface-2:#EEF3F7;--ink:#0F1C2B;--ink-2:#465668;--ink-3:#76858F;--line:#E1E8EF;
+--brand:#0A7C86;--brand-ink:#065A62;--brand-soft:#DDF1F2;--blue:#2E6BD8;--blue-soft:#E4EDFB;
+--good:#12946A;--good-soft:#DFF3EA;--warn:#C97A06;--warn-soft:#FCEFD6;--bad:#CC3E37;--bad-soft:#FBE5E3;
+--tt:#0F1C2B;--shadow:0 1px 2px rgba(15,28,43,.05),0 10px 24px -14px rgba(15,28,43,.18);--shadow-lg:0 24px 60px -20px rgba(15,28,43,.35);
+--f-head:'Manrope','Segoe UI',system-ui,sans-serif;--f-body:'Figtree','Segoe UI',system-ui,-apple-system,sans-serif;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A1118;--surface:#111B25;--surface-2:#182531;--ink:#E8EEF4;--ink-2:#A6B4C2;--ink-3:#78899A;--line:#223141;
+--brand:#3CC1CC;--brand-ink:#7FDDE5;--brand-soft:#0F3A40;--blue:#6C9BFF;--blue-soft:#15284A;--good:#3DD39F;--good-soft:#0F3527;--warn:#F0AE3C;--warn-soft:#3B2C0D;--bad:#FF7A72;--bad-soft:#43181A;--tt:#000;--shadow:0 1px 2px rgba(0,0,0,.4),0 10px 24px -14px rgba(0,0,0,.6);color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0A1118;--surface:#111B25;--surface-2:#182531;--ink:#E8EEF4;--ink-2:#A6B4C2;--ink-3:#78899A;--line:#223141;
+--brand:#3CC1CC;--brand-ink:#7FDDE5;--brand-soft:#0F3A40;--blue:#6C9BFF;--blue-soft:#15284A;--good:#3DD39F;--good-soft:#0F3527;--warn:#F0AE3C;--warn-soft:#3B2C0D;--bad:#FF7A72;--bad-soft:#43181A;--tt:#000;--shadow:0 1px 2px rgba(0,0,0,.4),0 10px 24px -14px rgba(0,0,0,.6);color-scheme:dark}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font:14px/1.55 var(--f-body);-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+h1,h2,h3,h4,p{margin:0}
+h1,h2,h3,h4,.num{font-family:var(--f-head);letter-spacing:-.01em}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none;padding:0}
+button:focus-visible,summary:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(--brand);outline-offset:2px;border-radius:8px}
+svg{display:block;max-width:100%}
+.ico{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.app{display:grid;grid-template-columns:268px minmax(0,1fr);min-height:100dvh}
+.side{position:sticky;top:env(safe-area-inset-top,0px);height:calc(100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));background:var(--surface);border-right:1px solid var(--line);display:flex;flex-direction:column;z-index:40}
+.brand{display:flex;gap:11px;align-items:center;padding:20px 20px 14px}
+.logo{width:36px;height:36px;border-radius:11px;background:var(--ink);color:var(--bg);display:grid;place-items:center}
+.brand b{font:800 17px var(--f-head);letter-spacing:-.02em;display:block;line-height:1.1}
+.brand small{color:var(--ink-3);font-size:11.5px}
+.nav{flex:1;overflow:auto;padding:4px 12px 12px}
+.nav h6{margin:14px 10px 6px;font:600 12px var(--f-body);color:var(--ink-3)}
+.nav-i{display:flex;align-items:center;gap:11px;width:100%;padding:9px 12px;border-radius:11px;color:var(--ink-2);font-weight:550;text-align:left;position:relative;transition:background .15s,color .15s}
+.nav-i:hover{background:var(--surface-2);color:var(--ink)}
+.nav-i.on{background:var(--brand-soft);color:var(--brand-ink);font-weight:700}
+.nav-i.on::before{content:"";position:absolute;left:-12px;top:9px;bottom:9px;width:4px;border-radius:0 4px 4px 0;background:var(--brand)}
+.nav-i .badge{margin-left:auto;background:var(--brand);color:#fff;border-radius:99px;font-size:11px;padding:0 7px;line-height:18px}
+.profile{border-top:1px solid var(--line);padding:14px 16px;display:grid;grid-template-columns:auto 1fr;gap:4px 12px;align-items:center}
+.avatar{width:40px;height:40px;border-radius:50%;background:var(--blue-soft);color:var(--blue);display:grid;place-items:center;font:800 14px var(--f-head);grid-row:span 2}
+.profile b{font-weight:700;line-height:1.2}.profile small{color:var(--ink-3)}
+.pscore{grid-column:1/-1;margin-top:8px;font-size:12px;color:var(--ink-2)}
+.pscore .bar{margin-top:5px}
+.main{min-width:0;display:flex;flex-direction:column}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;display:flex;align-items:center;gap:10px;padding:12px 28px;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top .grow{flex:1}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:99px;background:var(--surface);border:1px solid var(--line);font-size:12.5px;font-weight:600;color:var(--ink-2)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--good);position:relative;flex:none}
+.dot::after{content:"";position:absolute;inset:-4px;border-radius:50%;background:inherit;opacity:.35;animation:pulse 2s ease-out infinite}
+.dot.warn{background:var(--warn)}.dot.bad{background:var(--bad)}.dot.off{background:var(--ink-3)}.dot.off::after{display:none}
+@keyframes pulse{0%{transform:scale(.6);opacity:.5}100%{transform:scale(1.8);opacity:0}}
+.ib{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:var(--surface);border:1px solid var(--line);color:var(--ink-2);position:relative;transition:background .15s}
+.ib:hover{background:var(--surface-2)}
+.ib .n{position:absolute;top:-4px;right:-4px;background:var(--bad);color:#fff;font-size:10.5px;min-width:17px;height:17px;border-radius:9px;display:grid;place-items:center;font-weight:700}
+.menu-b{display:none}
+.page{padding:26px 28px 24px;max-width:1440px;width:100%;margin:0 auto;flex:1}
+.ph{display:flex;gap:16px;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;margin-bottom:22px}
+.ph h1{font-size:28px;font-weight:800;line-height:1.15}
+.ph p{color:var(--ink-2);margin-top:6px;max-width:640px}
+.ph .act{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 16px;border-radius:11px;font-weight:650;background:var(--surface);border:1px solid var(--line);color:var(--ink);transition:transform .12s,background .15s,box-shadow .15s}
+.btn:hover{background:var(--surface-2)}.btn:active{transform:translateY(1px)}
+.btn.pri{background:var(--brand);border-color:var(--brand);color:#fff}
+.btn.pri:hover{background:var(--brand-ink)}
+.btn.dark{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn.sm{padding:6px 11px;font-size:13px;border-radius:9px}
+.btn[disabled]{opacity:.55;pointer-events:none}
+.seg{display:inline-flex;background:var(--surface-2);border-radius:11px;padding:3px;gap:2px;max-width:100%;overflow-x:auto}
+.seg button{padding:6px 13px;border-radius:9px;font-weight:600;color:var(--ink-2);white-space:nowrap;font-size:13px}
+.seg button.on{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--shadow);min-width:0}
+.card.flat{box-shadow:none}
+.card.soft{background:var(--surface-2);box-shadow:none}
+.ch{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.ch h3{font-size:16px;font-weight:750}
+.ch p{color:var(--ink-3);font-size:12.5px;margin-top:2px}
+.sec{margin:30px 0 14px;display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.sec h2{font-size:19px;font-weight:780}.sec p{color:var(--ink-3);font-size:13px}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.g6{grid-template-columns:repeat(6,minmax(0,1fr))}.g-21{grid-template-columns:minmax(0,1.6fr) minmax(0,1fr)}.g-12{grid-template-columns:minmax(0,1fr) minmax(0,1.5fr)}.g-11{grid-template-columns:repeat(2,minmax(0,1fr))}
+.chip{display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:99px;font-size:12px;font-weight:650;background:var(--surface-2);color:var(--ink-2);white-space:nowrap}
+.chip.good{background:var(--good-soft);color:var(--good)}.chip.warn{background:var(--warn-soft);color:var(--warn)}.chip.bad{background:var(--bad-soft);color:var(--bad)}.chip.brand{background:var(--brand-soft);color:var(--brand-ink)}.chip.blue{background:var(--blue-soft);color:var(--blue)}
+.muted{color:var(--ink-3)}.tiny{font-size:12px}.b{font-weight:700}
+.bar{height:7px;background:var(--surface-2);border-radius:9px;overflow:hidden;display:flex}
+.bar i{display:block;height:100%;transition:width .8s cubic-bezier(.3,.7,.2,1)}
+.hero{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:16px}
+.status{position:relative;overflow:hidden}
+.status .big{font:800 44px/1 var(--f-head);color:var(--good);display:flex;align-items:center;gap:14px;letter-spacing:-.03em}
+.status .facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 22px;margin-top:20px}
+.status .facts small{display:block;color:var(--ink-3);font-size:12px}
+.status .facts b{font:700 16px var(--f-head)}
+.greet h1{font-size:32px;font-weight:800}
+.kpi{cursor:pointer;transition:transform .15s,border-color .15s;display:flex;flex-direction:column;gap:6px;padding:16px}
+.kpi:hover{transform:translateY(-2px);border-color:var(--brand)}
+.kpi .l{color:var(--ink-2);font-weight:600;font-size:13px}
+.kpi .v{font:800 28px/1.1 var(--f-head);letter-spacing:-.02em}
+.kpi .v small{font-size:14px;color:var(--ink-3);font-weight:600;margin-left:2px}
+.kpi .spark{height:30px;width:100%}
+.kpi .cmp{font-size:12px;color:var(--ink-3);display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.split{display:flex;gap:16px;align-items:center}
+.cat-list{display:grid;gap:4px;flex:1;min-width:0}
+.cat{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;width:100%;text-align:left;transition:background .15s}
+.cat:hover,.cat.on{background:var(--surface-2)}
+.cat .sw{width:10px;height:10px;border-radius:3px;flex:none}.cat .n{flex:1;font-weight:600}.cat .p{font-weight:700}
+.donut{position:relative;flex:none}
+.donut .mid{position:absolute;inset:0;display:grid;place-content:center;text-align:center;pointer-events:none}
+.donut .mid b{font:800 30px var(--f-head)}.donut .mid small{color:var(--ink-3)}
+.donut circle{cursor:pointer;transition:stroke-width .2s,opacity .2s}
+.detail{margin-top:14px;padding:14px 16px;border-radius:13px;background:var(--surface-2);border:1px solid var(--line);animation:fadein .3s}
+@keyframes fadein{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+details.fx{border:1px solid var(--line);border-radius:14px;background:var(--surface);overflow:hidden}
+details.fx+details.fx{margin-top:10px}
+details.fx summary{list-style:none;display:flex;gap:14px;align-items:center;padding:14px 16px;cursor:pointer}
+details.fx summary::-webkit-details-marker{display:none}
+details.fx summary:hover{background:var(--surface-2)}
+details.fx .chev{margin-left:auto;transition:transform .2s;color:var(--ink-3)}
+details.fx[open] .chev{transform:rotate(90deg)}
+details.fx .body{padding:2px 16px 16px 16px;animation:fadein .25s}
+.fx-ico{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;flex:none}
+.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:8px 0 12px}
+.kv small{display:block;color:var(--ink-3);font-size:12px}.kv b{font-weight:700}
+.reco{background:var(--brand-soft);color:var(--ink);border-radius:11px;padding:11px 13px;display:flex;gap:10px;align-items:flex-start}
+.reco .ico{color:var(--brand-ink);margin-top:2px}
+.insight{position:relative;display:flex;flex-direction:column;gap:10px}
+.ai-tag{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--blue)}
+.compare{display:grid;grid-template-columns:minmax(0,.7fr) minmax(0,1.6fr);gap:16px}
+.flowrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.step{padding:8px 13px;border-radius:10px;font-weight:650;background:var(--surface-2);color:var(--ink-2)}
+.step.hi{background:var(--brand);color:#fff}
+.arrow{color:var(--ink-3)}
+.chart{position:relative;width:100%}
+.tt{position:absolute;pointer-events:none;background:var(--tt);color:#fff;padding:10px 12px;border-radius:11px;font-size:12.5px;line-height:1.5;min-width:170px;max-width:270px;opacity:0;transition:opacity .12s;z-index:5;box-shadow:var(--shadow-lg);border:1px solid rgba(255,255,255,.08)}
+.tt b{font-weight:700}.tt .r{display:flex;justify-content:space-between;gap:14px;color:#C9D4DF}.tt .r span:last-child{color:#fff;font-weight:600}
+.axis text{font:11px var(--f-body);fill:var(--ink-3)}
+.grid-l{stroke:var(--line);stroke-width:1}
+.draw{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.3s cubic-bezier(.4,.1,.2,1) forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.grow-y{transform-box:fill-box;transform-origin:bottom;animation:growy .8s cubic-bezier(.3,.7,.2,1) both}
+@keyframes growy{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--ink-2)}.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.heat{display:grid;gap:3px}
+.heat .c{height:26px;border-radius:6px;display:grid;place-items:center;font-size:11px;color:#fff;font-weight:700}
+.heat .lab{font-size:12px;color:var(--ink-3);display:flex;align-items:center}
+.fig{width:100%;height:auto;max-height:420px;--fig:var(--brand)}
+.fig .fl{stroke:var(--line);stroke-width:2}
+.fig .fu{stroke:var(--ink-3);stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round;opacity:.55}
+.fig .fb{stroke:var(--fig);stroke-width:10;fill:none;stroke-linecap:round;stroke-linejoin:round;transition:stroke .5s}
+.fig .fh{fill:var(--surface);stroke:var(--fig);stroke-width:5;transition:stroke .5s}
+.fig .fj{fill:var(--surface);stroke:var(--fig);stroke-width:3}
+.fig .fscr{fill:var(--ink);opacity:.85}
+.fig .fdash{stroke:var(--brand);stroke-width:1.5;stroke-dasharray:4 5;fill:none}
+.fig text{font:600 11px var(--f-body);fill:var(--ink-3)}
+.f-torso,.f-head,.f-mon{transition:transform .9s cubic-bezier(.3,.7,.2,1)}
+.metric{display:flex;flex-direction:column;gap:2px;padding:14px;border:1px solid var(--line);border-radius:13px;background:var(--surface)}
+.metric small{color:var(--ink-3);font-size:12px}.metric b{font:800 22px var(--f-head)}
+.feed{display:grid;gap:0;max-height:300px;overflow:auto}
+.feed div{display:grid;grid-template-columns:70px 1fr;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px;animation:fadein .3s}
+.feed time{color:var(--ink-3);font-variant-numeric:tabular-nums}
+.banner{display:flex;gap:12px;align-items:flex-start;padding:13px 16px;border-radius:13px;background:var(--warn-soft);color:var(--ink);margin-bottom:16px;border:1px solid color-mix(in srgb,var(--warn) 30%,transparent)}
+.banner .ico{color:var(--warn);margin-top:2px}
+.empty{display:grid;place-items:center;text-align:center;padding:44px 20px;gap:10px;border:1.5px dashed var(--line);border-radius:16px;background:var(--surface)}
+.empty .eic{width:54px;height:54px;border-radius:16px;display:grid;place-items:center;background:var(--brand-soft);color:var(--brand-ink)}
+.empty .eic.warn{background:var(--warn-soft);color:var(--warn)}.empty .eic.good{background:var(--good-soft);color:var(--good)}
+.empty h3{font-size:17px}.empty p{color:var(--ink-2);max-width:420px}
+.skel{border-radius:14px;background:linear-gradient(90deg,var(--surface-2) 25%,var(--line) 37%,var(--surface-2) 63%);background-size:400% 100%;animation:sh 1.3s ease infinite}
+@keyframes sh{0%{background-position:100% 50%}100%{background-position:0 50%}}
+.spin{width:18px;height:18px;border-radius:50%;border:2.5px solid var(--line);border-top-color:var(--brand);animation:rot .8s linear infinite;flex:none}
+@keyframes rot{to{transform:rotate(360deg)}}
+.tgl{width:40px;height:23px;border-radius:99px;background:var(--line);position:relative;flex:none;transition:background .2s}
+.tgl::after{content:"";position:absolute;top:3px;left:3px;width:17px;height:17px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.tgl.on{background:var(--brand)}.tgl.on::after{transform:translateX(17px)}.tgl.lock{opacity:.6;pointer-events:none}
+.row{display:flex;gap:14px;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--line)}
+.row:last-child{border:0}.row p{color:var(--ink-3);font-size:12.5px}
+.prio{font-size:12px;font-weight:750;padding:3px 10px;border-radius:99px}
+.prio.high{background:var(--bad-soft);color:var(--bad)}.prio.med{background:var(--warn-soft);color:var(--warn)}.prio.low{background:var(--blue-soft);color:var(--blue)}
+.rec{display:grid;gap:12px}
+.rec.done{opacity:.62}
+.rec .meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.rec .meta small{color:var(--ink-3);display:block;font-size:12px}
+.xai{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:6px}
+.xai div{background:var(--surface-2);border-radius:12px;padding:12px}
+.xai b{display:block;font:700 12.5px var(--f-head);color:var(--brand-ink);margin-bottom:3px}
+.day{display:flex;flex-direction:column;gap:10px}
+.day.today{border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-soft),var(--shadow)}
+.task{display:flex;gap:10px;align-items:flex-start;text-align:left;width:100%;padding:8px 10px;border-radius:10px;transition:background .15s}
+.task:hover{background:var(--surface-2)}
+.task small{display:block;color:var(--ink-3);font-size:11.5px}
+.cb{width:20px;height:20px;border-radius:6px;border:2px solid var(--line);display:grid;place-items:center;flex:none;margin-top:1px;color:#fff;transition:all .15s}
+.task.on .cb{background:var(--brand);border-color:var(--brand)}.task.on span{text-decoration:line-through;color:var(--ink-3)}
+.movement-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+.move-card{display:flex;flex-direction:column;gap:12px}
+.move-figure{height:190px;border:1px solid var(--line);border-radius:14px;background:var(--surface-2);display:grid;place-items:center;overflow:hidden;padding:6px 8px}
+.move-svg{width:100%;height:180px;max-width:250px}
+.move-svg .stick{stroke:var(--brand);stroke-width:4.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.move-svg .head{fill:var(--surface);stroke:var(--brand);stroke-width:3.2}
+.move-svg .joint{fill:var(--surface);stroke:var(--brand);stroke-width:2.8}
+.move-svg .guide{stroke:var(--line);stroke-width:1.5;fill:none;stroke-dasharray:4 5}
+.move-svg .divider{stroke:var(--line);stroke-width:1}
+.move-svg .arrow{stroke:var(--brand);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.move-svg .pose-a{transform-box:fill-box;transform-origin:center;animation:poseA 3.2s ease-in-out infinite}
+.move-svg .pose-b{transform-box:fill-box;transform-origin:center;animation:poseB 3.2s ease-in-out infinite}
+.move-svg .wrist-a{transform-box:fill-box;transform-origin:center;animation:wristA 2.8s ease-in-out infinite}
+.move-svg .wrist-b{transform-box:fill-box;transform-origin:center;animation:wristB 2.8s ease-in-out infinite}
+.move-svg .walk-b{transform-box:fill-box;transform-origin:center;animation:walkB 2.2s ease-in-out infinite}
+@keyframes poseA{0%,100%{transform:translateX(0)}50%{transform:translateX(2px)}}
+@keyframes poseB{0%,100%{transform:translateX(0) rotate(0)}50%{transform:translateX(-2px) rotate(-3deg)}}
+@keyframes wristA{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(10deg)}}
+@keyframes wristB{0%,100%{transform:rotate(4deg)}50%{transform:rotate(-10deg)}}
+@keyframes walkB{0%,100%{transform:translateX(0) rotate(0)}50%{transform:translateX(3px) rotate(2deg)}}
+
+.risk-breakdown{display:grid;gap:10px}
+.risk-breakdown .rb{display:grid;grid-template-columns:150px 1fr 42px;gap:10px;align-items:center}
+@media(max-width:520px){.risk-breakdown .rb{grid-template-columns:110px 1fr 38px}}
+
+.paper{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:38px 42px;box-shadow:var(--shadow);max-width:820px}
+.paper h2{font-size:24px;margin-bottom:4px}.paper h4{font-size:15px;margin:22px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.paper p,.paper li{color:var(--ink-2)}.paper ul{margin:6px 0;padding-left:18px}
+.paper table{width:100%;border-collapse:collapse;font-size:13px}.paper td,.paper th{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left}.paper th{color:var(--ink-3);font-weight:600}
+.prog{height:9px}
+.node{padding:12px 14px;border-radius:12px;background:var(--surface);border:1px solid var(--line);font-weight:650;text-align:center;transition:all .15s;cursor:pointer;width:100%}
+.node:hover,.node.on{border-color:var(--brand);background:var(--brand-soft);color:var(--brand-ink)}
+.node small{display:block;color:var(--ink-3);font-weight:500;font-size:12px;margin-top:2px}
+.vflow{display:grid;gap:0;justify-items:center}
+.vflow .ln{width:2px;height:16px;background:linear-gradient(var(--line),var(--brand));position:relative}
+.lvl{display:flex;gap:14px;align-items:center;padding:12px 14px;border-radius:13px;border:1px solid var(--line);background:var(--surface);transition:all .25s}
+.lvl .n{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:var(--surface-2);font:800 14px var(--f-head);flex:none}
+.lvl.on{border-color:var(--brand);background:var(--brand-soft);transform:translateX(4px)}.lvl.on .n{background:var(--brand);color:#fff}
+input[type=range]{width:100%;accent-color:var(--brand)}
+select,.inp{font:inherit;padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.pin{position:absolute;transform:translate(-50%,-50%);width:30px;height:30px;border-radius:50%;display:grid;place-items:center;color:#fff;box-shadow:0 0 0 4px var(--surface),var(--shadow);font-weight:800;font-size:13px;transition:transform .15s}
+.pin:hover,.pin.on{transform:translate(-50%,-50%) scale(1.15)}
+.pin.good{background:var(--good)}.pin.warn{background:var(--warn)}.pin.bad{background:var(--bad)}
+.disc{padding:16px 28px 22px;color:var(--ink-3);font-size:12px;text-align:center;max-width:900px;margin:0 auto}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--ink);color:var(--bg);padding:11px 18px;border-radius:12px;font-weight:600;opacity:0;transition:all .3s;z-index:200;pointer-events:none;box-shadow:var(--shadow-lg);max-width:calc(100vw - 32px)}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.scrim{position:fixed;inset:0;background:rgba(8,15,24,.5);z-index:100;display:grid;place-items:center;padding:20px;animation:fadein .2s;backdrop-filter:blur(2px)}
+.modal{background:var(--surface);border-radius:20px;width:min(820px,100%);max-height:calc(100dvh - 40px);overflow:auto;padding:26px;box-shadow:var(--shadow-lg);position:relative}
+.modal .x{position:absolute;right:14px;top:14px}
+.pop{position:absolute;right:0;top:46px;width:min(380px,calc(100vw - 32px));background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-lg);padding:14px;z-index:60;animation:fadein .2s}
+.notif{display:flex;gap:12px;padding:12px;border-radius:12px;align-items:flex-start}
+.notif+.notif{border-top:1px solid var(--line)}
+.notif .fx-ico{width:34px;height:34px}
+.demo{position:fixed;inset:0;z-index:150;background:var(--bg);overflow:auto;padding:calc(18px + env(safe-area-inset-top,0px)) 24px calc(24px + env(safe-area-inset-bottom,0px));animation:fadein .3s}
+.demo .wrap{max-width:1320px;margin:0 auto}
+.dstep{display:flex;gap:12px;align-items:flex-start;padding:9px 10px;border-radius:11px;color:var(--ink-3);transition:all .3s}
+.dstep .k{width:24px;height:24px;border-radius:50%;background:var(--surface-2);display:grid;place-items:center;font-size:12px;font-weight:800;flex:none;transition:all .3s}
+.dstep.act{background:var(--brand-soft);color:var(--ink)}.dstep.act .k{background:var(--brand);color:#fff}
+.dstep.done{color:var(--ink-2)}.dstep.done .k{background:var(--good);color:#fff}
+.dstep b{display:block;font-weight:700}.dstep small{display:block;font-size:12px}
+.log{font:12.5px/1.6 var(--f-body);display:grid;gap:6px;max-height:210px;overflow:auto}
+.log div{padding:7px 10px;border-radius:9px;background:var(--surface-2);animation:fadein .3s}
+.pos-rel{position:relative}
+.two-col{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+pre.json{background:var(--surface-2);border-radius:12px;padding:14px;overflow:auto;font:12.5px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--ink-2);margin:0}
+.tags{display:flex;gap:8px;flex-wrap:wrap}
+.hbar{display:grid;grid-template-columns:130px 1fr 44px;gap:10px;align-items:center;font-size:13px;margin:7px 0}
+.sideov{display:none}
+@media (max-width:1180px){.g6{grid-template-columns:repeat(3,minmax(0,1fr))}.g4{grid-template-columns:repeat(2,minmax(0,1fr))}.hero,.g-21,.g-12{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:920px){
+.app{grid-template-columns:minmax(0,1fr)}
+.side{position:fixed;left:0;top:0;bottom:0;height:auto;width:min(300px,86vw);transform:translateX(-102%);transition:transform .25s;padding-top:env(safe-area-inset-top,0px);box-shadow:var(--shadow-lg)}
+.side.open{transform:none}.sideov.open{display:block;position:fixed;inset:0;background:rgba(8,15,24,.45);z-index:35}
+.menu-b{display:grid}.top{padding:10px 14px}.page{padding:18px 14px}.top .hide-m{display:none}
+.g3,.g2,.g-11,.two-col,.compare{grid-template-columns:minmax(0,1fr)}.g6{grid-template-columns:repeat(2,minmax(0,1fr))}
+.split{flex-direction:column;align-items:stretch}.donut{align-self:center}
+.ph h1,.greet h1{font-size:24px}.paper{padding:22px 18px}.status .big{font-size:36px}}
+@media (max-width:520px){.g4{grid-template-columns:minmax(0,1fr)}.hbar{grid-template-columns:96px 1fr 40px}.card{padding:16px}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+</style></head><body>
+<div class="app"><aside class="side" id="side"></aside><div class="sideov" id="sideov" data-act="menu"></div>
+<div class="main"><header class="top" id="top"></header><main class="page" id="page"></main><footer class="disc" id="disc"></footer></div></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+'use strict';
+/* ================= helpers ================= */
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const pad=n=>String(n).padStart(2,'0');
+const fmtT=m=>pad(Math.floor(m/60))+':'+pad(Math.floor(m%60));
+const fmtH=m=>{const h=Math.floor(m/60),mm=Math.round(m%60);return h?`${h}h ${pad(mm)}m`:`${mm}m`};
+const fmtS=s=>{const m=Math.floor(s/60);return m>=60?fmtH(m):`${m}m ${pad(s%60)}s`};
+const hLab=h=>h===12?'12 PM':h>12?(h-12)+' PM':h+' AM';
+const uid=(()=>{let n=0;return()=>'u'+(++n)})();
+function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function hashStr(s){let h=7;for(const c of s)h=Math.imul(h^c.charCodeAt(0),16777619);return h>>>0}
+const ICO={
+overview:'<rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/>',
+live:'<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>',
+posture:'<circle cx="12" cy="5" r="2"/><path d="M12 7v7M7 10h10M9 21l3-7 3 7"/>',
+timeline:'<path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/>',
+habits:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+recs:'<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0 0 12 3z"/>',movement:'<circle cx="9" cy="5" r="2.5"/><path d="M9 8v7M5 11l4 2 5-3M9 15l-4 6M9 15l5 6"/>',
+weekly:'<rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 10h18"/>',
+reports:'<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/>',
+workstation:'<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 21h8M12 16v5"/>',
+progress:'<polyline points="3 17 9 11 13 15 21 7"/><polyline points="15 7 21 7 21 13"/>',
+settings:'<path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/>',
+engine:'<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>',
+baseline:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
+privacy:'<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/>',
+arch:'<rect x="3" y="3" width="7" height="6" rx="1"/><rect x="14" y="3" width="7" height="6" rx="1"/><rect x="8" y="15" width="8" height="6" rx="1"/><path d="M6.5 9v3h11V9M12 12v3"/>',
+care:'<circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14c3 0 5 2 5 5"/>',
+bell:'<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10 21a2 2 0 0 0 4 0"/>',
+menu:'<path d="M4 6h16M4 12h16M4 18h16"/>',
+play:'<polygon points="6 4 20 12 6 20"/>',pause:'<path d="M8 5v14M16 5v14"/>',
+check:'<path d="M5 12l5 5 9-10"/>',x:'<path d="M6 6l12 12M18 6L6 18"/>',
+download:'<path d="M12 3v12M7 10l5 5 5-5M4 21h16"/>',
+alert:'<path d="M12 3l10 18H2zM12 10v4M12 17.5h.01"/>',
+chev:'<path d="M9 6l6 6-6 6"/>',moon:'<path d="M21 13A9 9 0 1 1 11 3a7 7 0 0 0 10 10z"/>',
+info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>',
+lock:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
+camera:'<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/>',
+spark:'<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/>',
+refresh:'<path d="M20 11a8 8 0 1 0-2 5.5M20 4v7h-7"/>',
+share:'<circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8.2 10.8l7.6-3.6M8.2 13.2l7.6 3.6"/>',
+sensor:'<path d="M5 12a7 7 0 0 1 14 0M8 12a4 4 0 0 1 8 0"/><circle cx="12" cy="12" r="1"/><path d="M12 13v8"/>',
+trash:'<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/>',
+eye:'<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>'};
+const ico=(n,c='')=>`<svg class="ico ${c}" viewBox="0 0 24 24" aria-hidden="true">${ICO[n]||''}</svg>`;
+
+/* ================= mock dataset ================= */
+const DAYS=Array.from({length:14},(_,i)=>{const d=new Date(2026,8,15+i);return{idx:i,date:d,key:`2026-09-${pad(15+i)}`,weekend:d.getDay()===0||d.getDay()===6,name:d.toLocaleDateString('en-US',{weekday:'short'}),label:d.toLocaleDateString('en-US',{month:'short',day:'numeric'})}});
+const PERIODS={today:{label:'Today',days:[13]},yesterday:{label:'Yesterday',days:[12]},week:{label:'This week',days:[7,8,9,10,11,12,13]},lastweek:{label:'Last week',days:[0,1,2,3,4,5,6]},aug:{label:'Aug 2026',days:[]}};
+const CURVE=[[8,14],[9,20],[10,24],[10.75,33],[11,44],[11.5,41],[11.9,30],[12,10],[13,10],[13.25,20],[14,38],[15,60],[15.75,66],[16,74],[16.75,78],[17,40],[17.5,26]];
+const curve=h=>{if(h<=CURVE[0][0])return CURVE[0][1];for(let i=1;i<CURVE.length;i++){if(h<=CURVE[i][0]){const a=CURVE[i-1],b=CURVE[i];return a[1]+(b[1]-a[1])*(h-a[0])/(b[0]-a[0])}}return CURVE[CURVE.length-1][1]};
+const ACTS=[[480,510,'Communication'],[510,630,'Coding'],[630,660,'Meeting'],[660,720,'Coding'],[720,780,'Away (lunch)'],[780,810,'Communication'],[810,840,'Documentation'],[840,1000,'Coding'],[1000,1080,'Code review']];
+const actAt=m=>(ACTS.find(a=>m>=a[0]&&m<a[1])||ACTS[0])[2];
+const lvl=r=>r<35?'low':r<65?'moderate':'high';
+const LVL={low:{t:'Low',c:'good'},moderate:{t:'Moderate',c:'warn'},high:{t:'High',c:'bad'}};
+function riskAt(d,m){let v=curve(m/60)*(1.22-0.22*d.idx/13);if(d.weekend)v*=.55;v+=(rng(d.idx*7919+m)()-.5)*6;return clamp(Math.round(v),3,96)}
+const inWin=(d,m)=>d.weekend?(m>=600&&m<=750):true;
+const SERIES={};
+function series(d){if(SERIES[d.idx])return SERIES[d.idx];const o=[];for(let m=480;m<=1050;m+=10)o.push({m,r:inWin(d,m)?riskAt(d,m):null});return SERIES[d.idx]=o}
+const TYPES={
+forward_head:{label:'Forward head',short:'Forward head posture',region:'neck',contrib:'Monitor positioned slightly below optimal eye level',rec:'Review monitor height and viewing position',col:'#2E6BD8'},
+slouched:{label:'Slouched',short:'Slouched posture',region:'back',contrib:'Seat depth or limited lumbar support',rec:'Reset seat depth and use lumbar support',col:'#7EA2EE'},
+leaning_left:{label:'Leaning left',short:'Leaning left',region:'back',contrib:'Frequently used items placed to one side',rec:'Centre the primary screen and frequently used items',col:'#8C9CB1'},
+leaning_right:{label:'Leaning right',short:'Leaning right',region:'back',contrib:'Mouse reach or screen offset',rec:'Bring the mouse closer and centre the screen',col:'#B5C0CE'},
+elevated_shoulder:{label:'Elevated shoulder',short:'Elevated shoulder',region:'shoulders',contrib:'Desk or armrest slightly high',rec:'Lower desk or armrest so shoulders can relax',col:'#DDA02F'},
+wrist_deviation:{label:'Wrist deviation',short:'Wrist deviation',region:'wrists',contrib:'Keyboard height or distance',rec:'Review keyboard height and wrist position',col:'#D8675E'},
+static:{label:'Excessive static position',short:'Prolonged static position',region:'lower',contrib:'Long uninterrupted focus session',rec:'Add a short movement break before the 60-minute mark',col:'#9AA6B3'}};
+const REGIONS={neck:'Head / Neck',shoulders:'Shoulders',back:'Back',elbows:'Elbows',wrists:'Wrists',lower:'Lower body'};
+const EVENTS={};
+function events(d){
+ if(EVENTS[d.idx])return EVENTS[d.idx];
+ const r=rng(d.idx*131+7),f=1.25-0.25*d.idx/13,w=d.weekend?.35:1,out=[],today=d.idx===13;
+ const base={forward_head:17,slouched:9,wrist_deviation:11,elevated_shoulder:3,leaning_left:2,leaning_right:2};
+ const wins={forward_head:[[630,690,.15],[840,990,.7],[1000,1040,.15]],slouched:[[840,960,.3],[960,1050,.7]],wrist_deviation:[[510,660,.5],[840,1000,.5]],elevated_shoulder:[[540,700,.5],[850,1000,.5]],leaning_left:[[520,1000,1]],leaning_right:[[520,1000,1]]};
+ const dur={forward_head:()=>20+Math.round(r()*r()*560),slouched:()=>30+Math.round(r()*300),wrist_deviation:()=>8+Math.round(r()*90),elevated_shoulder:()=>30+Math.round(r()*200),leaning_left:()=>40+Math.round(r()*180),leaning_right:()=>40+Math.round(r()*180)};
+ const mk=(k,m,s)=>{const rk=riskAt(d,m),T=TYPES[k];return{id:`${d.key}-${k}-${m}`,ts:`${d.key}T${fmtT(m)}:00`,day:d.idx,minute:m,posture_state:k,body_region:T.region,duration_seconds:s,activity:actAt(m),risk_level:lvl(rk),risk_score:rk,workstation_state:{desk_height_cm:72,monitor_height_cm:d.idx<9?104:108},recommendation:T.rec,contributor:T.contrib,confidence:+(0.82+r()*0.14).toFixed(2)}};
+ Object.entries(base).forEach(([k,n])=>{let c=today?n:Math.max(d.weekend?1:2,Math.round(n*f*w));if(today&&k==='forward_head')c=16;
+  for(let i=0;i<c;i++){let wl=wins[k],x=r(),acc=0,win=wl[0];for(const q of wl){acc+=q[2];if(x<=acc){win=q;break}}
+   let m=Math.round(win[0]+r()*(win[1]-win[0]));if(d.weekend)m=600+Math.round(r()*150);out.push(mk(k,m,dur[k]()))}});
+ if(today){const e=mk('forward_head',872,523);e.confidence=.91;e.risk_level='moderate';out.push(e)}
+ const st=[[512,55],[598,63],[896,74]];const n=d.weekend?1:3;
+ for(let i=0;i<n;i++){const j=today?0:Math.round((r()-.5)*24),dm=today?st[i][1]:Math.round(st[i][1]*(0.75+r()*.35));const m=d.weekend?620:st[i][0]+j;out.push(mk('static',m,dm*60))}
+ out.sort((a,b)=>a.minute-b.minute);return EVENTS[d.idx]=out}
+const pDays=k=>PERIODS[k].days.map(i=>DAYS[i]);
+const pEvents=k=>pDays(k).flatMap(events).sort((a,b)=>b.day-a.day||b.minute-a.minute);
+function pSeries(k){const ds=pDays(k);if(!ds.length)return[];const ss=ds.map(series);return ss[0].map((p,i)=>{const v=ss.map(s=>s[i].r).filter(x=>x!=null);return{m:p.m,r:v.length?Math.round(v.reduce((a,b)=>a+b,0)/v.length):null,min:v.length?Math.min(...v):null,max:v.length?Math.max(...v):null,n:v.length}})}
+const sparkFor=(key,end,n=12,rise=.12)=>{const r=rng(hashStr(key));const s=end*(1-rise);return Array.from({length:n},(_,i)=>+(s+(end-s)*(i/(n-1))+(r()-.5)*end*.05).toFixed(1))};
+const KPIS={
+today:[{k:'score',l:'Ergonomic Risk Index',v:68,f:'score',d:'−3%',up:0,c:'vs last week'},{k:'healthy',l:'Healthy posture',v:62,f:'pct',d:'−5 pts',up:0,c:'of monitored time'},{k:'risk',l:'Risk exposure',v:107,f:'dur',d:'+23%',up:0,c:'vs yesterday (lower is better)',inv:1},{k:'break',l:'Break compliance',v:64,f:'pct',d:'−8 pts',up:0,c:'vs last week'},{k:'move',l:'Movement score',v:61,f:'pct',d:'−3 pts',up:0,c:'vs last week'},{k:'ws',l:'Workstation alignment',v:73,f:'pct',d:'−4 pts',up:0,c:'vs last week'}],
+yesterday:[{k:'score',l:'Ergonomic Risk Index',v:71,f:'score',d:'+1%',up:1,c:'vs Saturday'},{k:'healthy',l:'Healthy posture',v:65,f:'pct',d:'+2 pts',up:1,c:'of monitored time'},{k:'risk',l:'Risk exposure',v:87,f:'dur',d:'−4%',up:1,c:'vs Saturday',inv:1},{k:'break',l:'Break compliance',v:69,f:'pct',d:'+3 pts',up:1,c:'vs Saturday'},{k:'move',l:'Movement score',v:64,f:'pct',d:'+2 pts',up:1,c:'vs Saturday'},{k:'ws',l:'Workstation alignment',v:75,f:'pct',d:'+1 pt',up:1,c:'vs Saturday'}],
+week:[{k:'score',l:'Ergonomic Risk Index',v:68,f:'score',d:'−3%',up:0,c:'vs last week'},{k:'healthy',l:'Healthy posture',v:62,f:'pct',d:'+2 pts',up:1,c:'of monitored time'},{k:'risk',l:'Risk exposure',v:643,f:'dur',d:'−6%',up:1,c:'total vs last week',inv:1},{k:'break',l:'Break compliance',v:64,f:'pct',d:'+8 pts',up:1,c:'vs last week'},{k:'move',l:'Movement score',v:61,f:'pct',d:'+3 pts',up:1,c:'vs last week'},{k:'ws',l:'Workstation alignment',v:73,f:'pct',d:'+2 pts',up:1,c:'vs last week'}],
+lastweek:[{k:'score',l:'Ergonomic Risk Index',v:71,f:'score',d:'−2%',up:0,c:'vs prior week'},{k:'healthy',l:'Healthy posture',v:60,f:'pct',d:'−1 pt',up:0,c:'of monitored time'},{k:'risk',l:'Risk exposure',v:684,f:'dur',d:'+4%',up:0,c:'total vs prior week',inv:1},{k:'break',l:'Break compliance',v:56,f:'pct',d:'+2 pts',up:1,c:'vs prior week'},{k:'move',l:'Movement score',v:58,f:'pct',d:'+1 pt',up:1,c:'vs prior week'},{k:'ws',l:'Workstation alignment',v:71,f:'pct',d:'+1 pt',up:1,c:'vs prior week'}]};
+const DIST={neutral:62,forward_head:16,slouched:11,leaning_left:3,leaning_right:2,elevated_shoulder:2,wrist_deviation:3,static:1};
+const FACT={today:1,yesterday:1.08,week:1.16,lastweek:1.34};
+function dist(k){const f=FACT[k]||1,o={};let s=0;Object.entries(DIST).forEach(([a,v])=>{if(a!=='neutral'){o[a]=Math.round(v*f);s+=o[a]}});o.neutral=100-s;return o}
+const CATS={neutral:{label:'Neutral',col:'#0A7C86',desc:'Head, neck and torso aligned within your personal range.',contrib:'Balanced workstation and regular position changes',tip:'Keep alternating positions every 30–45 minutes.'},
+forward_head:{label:'Forward head',col:'#2E6BD8',desc:'Head carried ahead of the shoulders for a sustained period.',contrib:TYPES.forward_head.contrib,tip:'Raise the monitor ≈ 3–5 cm and keep a comfortable viewing distance.'},
+slouched:{label:'Slouched',col:'#7EA2EE',desc:'Torso collapsed toward the desk with reduced back support.',contrib:TYPES.slouched.contrib,tip:'Sit back into the chair and use lumbar support.'},
+leaning_left:{label:'Leaning left',col:'#8C9CB1',desc:'Weight shifted to the left side.',contrib:TYPES.leaning_left.contrib,tip:'Centre the screen and frequently used items.'},
+leaning_right:{label:'Leaning right',col:'#B5C0CE',desc:'Weight shifted to the right side.',contrib:TYPES.leaning_right.contrib,tip:'Bring the mouse closer to the keyboard.'},
+elevated_shoulder:{label:'Elevated shoulder',col:'#DDA02F',desc:'Shoulders lifted toward the ears during work.',contrib:TYPES.elevated_shoulder.contrib,tip:'Lower the desk or armrest so shoulders can relax.'},
+wrist_deviation:{label:'Wrist deviation',col:'#D8675E',desc:'Wrist angled away from a neutral line while typing.',contrib:TYPES.wrist_deviation.contrib,tip:'Review keyboard height and keep wrists in line with forearms.'},
+static:{label:'Excessive static position',col:'#9AA6B3',desc:'Long stretches with very little movement.',contrib:TYPES.static.contrib,tip:'Take a 2–3 minute movement break before 60 minutes.'}};
+const ATTN={today:{fwd:[14,39,'2:10 PM – 4:40 PM'],st:[3,78],wr:13},yesterday:{fwd:[8,22,'11:00 AM – 12:30 PM'],st:[2,56],wr:7},week:{fwd:[87,211,'2:00 PM – 4:40 PM'],st:[18,96],wr:69},lastweek:{fwd:[102,274,'2:00 PM – 4:30 PM'],st:[20,108],wr:61}};
+const LOAD={today:47,yesterday:42,week:44,lastweek:49};
+const REGION_BASE={neck:{h:64,m:24,x:12,exp:39,ev:14,tr:'Mixed →',tc:'warn',rec:'Raise the monitor ≈ 3–4 cm and recheck viewing distance during coding.'},
+shoulders:{h:76,m:18,x:6,exp:24,ev:7,tr:'Stable →',tc:'blue',rec:'Check desk and armrest height so shoulders can relax during typing.'},
+back:{h:70,m:20,x:10,exp:34,ev:15,tr:'Improving ↓',tc:'good',rec:'Use lumbar support and sit fully back in the chair after breaks.'},
+elbows:{h:88,m:9,x:3,exp:9,ev:2,tr:'Stable →',tc:'blue',rec:'Keep elbows near 90° with arms supported.'},
+wrists:{h:69,m:20,x:11,exp:33,ev:13,tr:'Needs attention ↑',tc:'warn',rec:'Review keyboard height and keep wrists in line with forearms.'},
+lower:{h:78,m:15,x:7,exp:27,ev:5,tr:'Stable →',tc:'blue',rec:'Add a short movement break before the 60-minute mark.'}};
+const HAB={today:{screen:'6h 18m',sit:'4h 32m',long:'86m',brk:'64%',avg:'54m',mov:'Fair',stand:'0h 46m',kb:'High',ms:'High',f:1},yesterday:{screen:'5h 12m',sit:'3h 24m',long:'67m',brk:'69%',avg:'51m',mov:'Fair',stand:'0h 39m',kb:'Moderate',ms:'High',f:.85},week:{screen:'6h 04m/day',sit:'4h 08m/day',long:'86m',brk:'64%',avg:'54m',mov:'Fair',stand:'0h 49m/day',kb:'High',ms:'High',f:1},lastweek:{screen:'6h 21m/day',sit:'4h 32m/day',long:'94m',brk:'56%',avg:'59m',mov:'Fair',stand:'0h 41m/day',kb:'High',ms:'High',f:1.04}};
+const HOURS=[8,9,10,11,12,13,14,15,16,17];
+const HKB=[35,60,72,55,5,50,68,78,70,40],HMS=[30,45,58,62,8,66,60,55,64,48];
+const HPRES=[26,52,52,44,6,46,52,48,52,24],HSTAND=[0,6,4,12,4,14,8,0,6,18];
+const SESS=[[512,55],[598,63],[680,41],[780,33],[832,38],[896,86],[974,42],[1020,30]];
+const NOTIFS0=[
+{id:1,t:'insight',ico:'timeline',tone:'warn',title:'Longest uninterrupted session today: 86 minutes',body:'It ran from 2:18 PM to 3:44 PM. A short movement break before the 60-minute mark would shorten the static block.',time:'2h ago',unread:1},
+{id:2,t:'insight',ico:'posture',tone:'blue',title:'Forward-head exposure is above your weekly baseline',body:'Mostly between 2:10 PM and 4:40 PM during coding and review.',time:'3h ago',unread:1},
+{id:3,t:'insight',ico:'spark',tone:'good',title:'Monitor adjustment helped, but the pattern is not resolved',body:'Forward-head exposure is down 14% from your earlier baseline, but afternoon events still recur.',time:'Yesterday',unread:1},
+{id:4,t:'insight',ico:'habits',tone:'good',title:'Break pattern improved, with room to go',body:'Compliance moved from 56% to 64% this week, but several focus blocks still exceed 60 minutes.',time:'Yesterday'},
+{id:5,t:'system',ico:'reports',tone:'brand',title:'Weekly report is ready',body:'Weekly Ergonomic Assessment for September 21–27 is available in Reports.',time:'Today, 8:00 AM',unread:1},
+{id:6,t:'system',ico:'baseline',tone:'brand',title:'Personal baseline established',body:'After 14 days of data your normal ranges are locked in and will keep adapting slowly.',time:'2 days ago'}];
+/* ================= charts ================= */
+function riskRGB(v){const S=[[0,[19,148,106]],[40,[214,146,18]],[80,[204,62,55]]];v=clamp(v,0,100);for(let i=1;i<S.length;i++){if(v<=S[i][0]){const a=S[i-1],b=S[i],t=(v-a[0])/(b[0]-a[0]);return a[1].map((c,j)=>Math.round(c+(b[1][j]-c)*t))}}return S[2][1]}
+const riskCol=(v,a=1)=>`rgba(${riskRGB(v).join(',')},${a})`;
+function spark(vals,col='var(--brand)',w=100,h=30){const mn=Math.min(...vals),mx=Math.max(...vals),rg=mx-mn||1;const p=vals.map((v,i)=>[i*w/(vals.length-1),h-3-(v-mn)/rg*(h-6)]);const d=p.map((q,i)=>(i?'L':'M')+q[0].toFixed(1)+' '+q[1].toFixed(1)).join('');
+ return `<svg class="spark" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><path d="${d}L${w} ${h}L0 ${h}Z" style="fill:${col}" opacity=".1"/><path d="${d}" pathLength="1" class="draw" style="fill:none;stroke:${col};stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round" vector-effect="non-scaling-stroke"/></svg>`}
+function tipEl(el){let t=el.querySelector('.tt');if(!t){t=document.createElement('div');t.className='tt';el.appendChild(t)}return t}
+function showTip(el,html,x,y){const t=tipEl(el);t.innerHTML=html;t.style.opacity=1;const W=el.clientWidth,tw=t.offsetWidth;let l=x+14;if(l+tw>W-4)l=x-tw-14;t.style.left=Math.max(4,l)+'px';t.style.top=Math.max(4,y-14)+'px'}
+const hideTip=el=>{const t=el.querySelector('.tt');if(t)t.style.opacity=0};
+function niceMax(v){const p=Math.pow(10,Math.floor(Math.log10(v||1)));const n=v/p;return(n<=1?1:n<=2?2:n<=5?5:10)*p}
+function pathOf(pts){let d='',pen=false;pts.forEach(p=>{if(p[1]==null||isNaN(p[1])){pen=false;return}d+=(pen?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1);pen=true});return d}
+function evtX(e){const r=e.currentTarget.getBoundingClientRect();return{x:(e.clientX-r.left),y:(e.clientY-r.top)}}
+
+function lineChart(el,o){
+ const W=el.clientWidth||600,H=o.h||220,m={l:42,r:16,t:14,b:28},n=o.labels.length;
+ const all=o.series.flatMap(s=>s.data).filter(v=>v!=null);
+ let mn=o.min!=null?o.min:Math.floor(Math.min(...all)*.9),mx=o.max!=null?o.max:Math.ceil(Math.max(...all)*1.08);
+ const X=i=>m.l+(n>1?i*(W-m.l-m.r)/(n-1):0),Y=v=>m.t+(1-(v-mn)/(mx-mn||1))*(H-m.t-m.b);
+ const fmt=o.fmt||(v=>v);let g='',ax='';
+ for(let i=0;i<=4;i++){const v=mn+(mx-mn)*i/4,y=Y(v);g+=`<line class="grid-l" x1="${m.l}" x2="${W-m.r}" y1="${y}" y2="${y}"/>`;ax+=`<text x="${m.l-8}" y="${y+4}" text-anchor="end">${fmt(Math.round(v*10)/10)}</text>`}
+ const step=Math.ceil(n/Math.max(2,Math.floor((W-m.l)/64)));
+ o.labels.forEach((l,i)=>{if(i%step===0||i===n-1)ax+=`<text x="${X(i)}" y="${H-8}" text-anchor="${i===0?'start':i===n-1?'end':'middle'}">${l}</text>`});
+ let band='';if(o.band){band=`<rect x="${m.l}" y="${Y(o.band.hi)}" width="${W-m.l-m.r}" height="${Y(o.band.lo)-Y(o.band.hi)}" fill="var(--brand)" opacity=".1" rx="6"/><text x="${W-m.r-6}" y="${Y(o.band.hi)+14}" text-anchor="end" style="font:600 11px var(--f-body);fill:var(--brand-ink)">${o.band.label}</text>`}
+ let lines='';o.series.forEach((s,si)=>{const pts=s.data.map((v,i)=>[X(i),v==null?null:Y(v)]);const d=pathOf(pts);
+  if(s.area)lines+=`<path d="${d}L${X(n-1)} ${H-m.b}L${X(0)} ${H-m.b}Z" style="fill:${s.color}" opacity=".08"/>`;
+  lines+=`<path d="${d}" pathLength="1" class="draw" style="fill:none;stroke:${s.color};stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;${s.dash?'stroke-dasharray:5 5;animation:none;stroke-dashoffset:0':''}"/>`;
+  if(n<=12)s.data.forEach((v,i)=>{if(v!=null)lines+=`<circle cx="${X(i)}" cy="${Y(v)}" r="3.6" style="fill:var(--surface);stroke:${s.color};stroke-width:2.2"/>`})});
+ el.classList.add('chart');
+ el.innerHTML=`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" class="axis">${g}${band}${lines}${ax}<line id="vl" y1="${m.t}" y2="${H-m.b}" style="stroke:var(--ink-3);stroke-dasharray:3 4;opacity:0"/><rect x="${m.l}" y="0" width="${W-m.l-m.r}" height="${H}" fill="transparent" class="ov"/></svg>`;
+ const ov=el.querySelector('.ov'),vl=el.querySelector('#vl');
+ const mv=e=>{const p=evtX({currentTarget:el.querySelector('svg'),clientX:e.clientX,clientY:e.clientY});const i=clamp(Math.round((p.x-m.l)/((W-m.l-m.r)/(n-1||1))),0,n-1);vl.setAttribute('x1',X(i));vl.setAttribute('x2',X(i));vl.style.opacity=1;
+  showTip(el,`<b>${o.labels[i]}</b>`+o.series.map(s=>`<div class="r"><span><i style="display:inline-block;width:8px;height:8px;border-radius:2px;background:${s.color};margin-right:6px"></i>${s.name||''}</span><span>${s.data[i]==null?'–':fmt(s.data[i])}${o.unit||''}</span></div>`).join(''),X(i),p.y)};
+ ov.addEventListener('pointermove',mv);ov.addEventListener('pointerdown',mv);ov.addEventListener('pointerleave',()=>{vl.style.opacity=0;hideTip(el)});
+}
+function barChart(el,o){
+ const W=el.clientWidth||600,H=o.h||220,m={l:40,r:10,t:12,b:28},n=o.labels.length,ns=o.series.length;
+ const tot=o.labels.map((_,i)=>o.stacked?o.series.reduce((a,s)=>a+(s.data[i]||0),0):Math.max(...o.series.map(s=>s.data[i]||0)));
+ const mx=o.max||niceMax(Math.max(...tot,...(o.refs||[]).map(r=>r.v))*1.05),Y=v=>m.t+(1-v/mx)*(H-m.t-m.b),gw=(W-m.l-m.r)/n,bw=Math.min(o.stacked?gw*.62:gw*.7/ns,46);
+ let g='',b='';for(let i=0;i<=4;i++){const v=mx*i/4,y=Y(v);g+=`<line class="grid-l" x1="${m.l}" x2="${W-m.r}" y1="${y}" y2="${y}"/><text x="${m.l-8}" y="${y+4}" text-anchor="end">${Math.round(v)}${o.unit||''}</text>`}
+ const step=Math.ceil(n/Math.max(2,Math.floor((W-m.l)/46)));
+ o.labels.forEach((l,i)=>{const cx=m.l+gw*(i+.5);if(i%step===0)g+=`<text x="${cx}" y="${H-8}" text-anchor="middle">${l}</text>`;
+  if(o.stacked){let acc=0;o.series.forEach(s=>{const v=s.data[i]||0,y0=Y(acc+v),h=Y(acc)-y0;b+=`<rect class="grow-y" x="${cx-bw/2}" y="${y0}" width="${bw}" height="${Math.max(0,h)}" rx="3" style="fill:${s.color};animation-delay:${i*30}ms"/>`;acc+=v})}
+  else o.series.forEach((s,si)=>{const v=s.data[i]||0,x=cx-(bw*ns)/2+si*bw;b+=`<rect class="grow-y" x="${x}" y="${Y(v)}" width="${bw-2}" height="${Math.max(0,Y(0)-Y(v))}" rx="4" style="fill:${(s.colors&&s.colors[i])||s.color};animation-delay:${i*30}ms"/>`})});
+ let refs='';(o.refs||[]).forEach(r=>{refs+=`<line x1="${m.l}" x2="${W-m.r}" y1="${Y(r.v)}" y2="${Y(r.v)}" style="stroke:${r.color};stroke-width:1.6;stroke-dasharray:5 5"/><text x="${W-m.r}" y="${Y(r.v)-5}" text-anchor="end" style="font:600 11px var(--f-body);fill:${r.color}">${r.label}</text>`});
+ el.classList.add('chart');el.innerHTML=`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" class="axis">${g}${b}${refs}<rect class="ov" x="${m.l}" y="0" width="${W-m.l-m.r}" height="${H}" fill="transparent"/></svg>`;
+ const ov=el.querySelector('.ov');const mv=e=>{const p=evtX({currentTarget:el.querySelector('svg'),clientX:e.clientX,clientY:e.clientY});const i=clamp(Math.floor((p.x-m.l)/gw),0,n-1);
+  showTip(el,`<b>${o.labels[i]}</b>`+o.series.map(s=>`<div class="r"><span>${s.name}</span><span>${s.data[i]||0}${o.unit||''}</span></div>`).join(''),m.l+gw*(i+.5),p.y)};
+ ov.addEventListener('pointermove',mv);ov.addEventListener('pointerdown',mv);ov.addEventListener('pointerleave',()=>hideTip(el));
+}
+function donut(items,o={}){
+ const S=o.size||190,T=o.thick||26,R=S/2-T/2-4,C=2*Math.PI*R;let acc=0,s='';
+ items.forEach(it=>{const len=Math.max(0,it.v/100*C-2.5),sel=o.sel===it.k;s+=`<circle data-act="cat" data-v="${it.k}" cx="${S/2}" cy="${S/2}" r="${R}" fill="none" stroke="${it.col}" stroke-width="${sel?T+7:T}" stroke-dasharray="${len} ${C-len}" stroke-dashoffset="${-acc/100*C}" transform="rotate(-90 ${S/2} ${S/2})" opacity="${o.sel&&!sel?.5:1}"><title>${it.label} ${it.v}%</title></circle>`;acc+=it.v});
+ return `<svg viewBox="0 0 ${S} ${S}" width="${S}" height="${S}"><circle cx="${S/2}" cy="${S/2}" r="${R}" fill="none" stroke="var(--surface-2)" stroke-width="${T}"/>${s}</svg>`}
+function gauge(v,max=100,o={}){
+ const W=o.w||260,R=W/2-16,cx=W/2,cy=R+18,len=Math.PI*R,arc=`M${cx-R} ${cy}A${R} ${R} 0 0 1 ${cx+R} ${cy}`;
+ return `<svg viewBox="0 0 ${W} ${cy+14}" width="${W}" height="${cy+14}"><path d="${arc}" fill="none" stroke="var(--surface-2)" stroke-width="16" stroke-linecap="round"/><path id="${o.id||''}" d="${arc}" fill="none" stroke="${riskCol(v)}" stroke-width="16" stroke-linecap="round" stroke-dasharray="${len*v/max} ${len}" style="transition:stroke-dasharray .8s cubic-bezier(.3,.7,.2,1),stroke .5s"/></svg>`}
+let gid=0;
+function riskChart(el,o){
+ const W=el.clientWidth||700,H=o.h||280,m={l:56,r:16,t:14,b:30},ser=o.series,x0=480,x1=1050;
+ const X=mn=>m.l+(mn-x0)/(x1-x0)*(W-m.l-m.r),Y=v=>m.t+(1-v/100)*(H-m.t-m.b),id='rg'+(++gid);
+ let bands=`<rect x="${m.l}" y="${Y(100)}" width="${W-m.l-m.r}" height="${Y(65)-Y(100)}" fill="var(--bad)" opacity=".07"/><rect x="${m.l}" y="${Y(65)}" width="${W-m.l-m.r}" height="${Y(35)-Y(65)}" fill="var(--warn)" opacity=".07"/><rect x="${m.l}" y="${Y(35)}" width="${W-m.l-m.r}" height="${Y(0)-Y(35)}" fill="var(--good)" opacity=".07"/>`;
+ let ax=`<text x="${m.l-10}" y="${Y(82)+4}" text-anchor="end">High</text><text x="${m.l-10}" y="${Y(50)+4}" text-anchor="end">Moderate</text><text x="${m.l-10}" y="${Y(17)+4}" text-anchor="end">Low</text>`;
+ for(let h=8;h<=17;h++){ax+=`<text x="${X(h*60)}" y="${H-9}" text-anchor="middle">${hLab(h)}</text>`;bands+=`<line class="grid-l" x1="${X(h*60)}" x2="${X(h*60)}" y1="${m.t}" y2="${H-m.b}" opacity=".6"/>`}
+ if(o.lunch)bands+=`<rect x="${X(720)}" y="${m.t}" width="${X(780)-X(720)}" height="${H-m.t-m.b}" fill="var(--ink-3)" opacity=".1"/><text x="${X(750)}" y="${m.t+14}" text-anchor="middle" style="font:600 11px var(--f-body);fill:var(--ink-3)">Break</text>`;
+ const pts=ser.map(p=>[X(p.m),p.r==null?null:Y(p.r)]),d=pathOf(pts);const valid=pts.filter(p=>p[1]!=null);
+ let area='';if(valid.length)area=`<path d="${d}L${valid[valid.length-1][0]} ${Y(0)}L${valid[0][0]} ${Y(0)}Z" fill="url(#${id})" opacity=".14"/>`;
+ let bandPath='';if(o.range){const up=ser.map(p=>[X(p.m),p.max==null?null:Y(p.max)]).filter(p=>p[1]!=null),dn=ser.map(p=>[X(p.m),p.min==null?null:Y(p.min)]).filter(p=>p[1]!=null).reverse();bandPath=`<path d="${pathOf(up)}L${dn.map(p=>p.join(' ')).join('L')}Z" fill="var(--brand)" opacity=".12"/>`}
+ let mk='';(o.events||[]).filter(e=>e.duration_seconds>=240||e.posture_state==='static').forEach(e=>{const b=ser[clamp(Math.floor((e.minute-x0)/10),0,ser.length-1)];if(!b||b.r==null)return;const c=e.risk_level==='high'?'var(--bad)':e.risk_level==='moderate'?'var(--warn)':'var(--good)';mk+=`<circle cx="${X(e.minute)}" cy="${Y(b.r)}" r="5" style="fill:${c};stroke:var(--surface);stroke-width:2"/>`});
+ el.classList.add('chart');
+ el.innerHTML=`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" class="axis"><defs><linearGradient id="${id}" gradientUnits="userSpaceOnUse" x1="0" x2="0" y1="${Y(100)}" y2="${Y(0)}"><stop offset="0" stop-color="#CC3E37"/><stop offset=".3" stop-color="#CC3E37"/><stop offset=".42" stop-color="#D68F12"/><stop offset=".58" stop-color="#D68F12"/><stop offset=".7" stop-color="#13946A"/><stop offset="1" stop-color="#13946A"/></linearGradient></defs>${bands}${bandPath}${area}<path d="${d}" pathLength="1" class="draw" style="fill:none;stroke:url(#${id});stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round"/>${mk}${ax}<line id="vl" y1="${m.t}" y2="${H-m.b}" style="stroke:var(--ink-2);stroke-dasharray:3 4;opacity:0"/><circle id="hd" r="6" style="fill:var(--surface);stroke:var(--ink);stroke-width:2.5;opacity:0"/><rect class="ov" x="${m.l}" y="0" width="${W-m.l-m.r}" height="${H}" fill="transparent"/></svg>`;
+ const svg=el.querySelector('svg'),vl=el.querySelector('#vl'),hd=el.querySelector('#hd');
+ const mv=e=>{const p=evtX({currentTarget:svg,clientX:e.clientX,clientY:e.clientY});const mn=clamp(x0+(p.x-m.l)/(W-m.l-m.r)*(x1-x0),x0,x1);const bi=clamp(Math.floor((mn-x0)/10+.5),0,ser.length-1),b=ser[bi];if(!b||b.r==null){hideTip(el);vl.style.opacity=0;hd.style.opacity=0;return}
+  vl.setAttribute('x1',X(b.m));vl.setAttribute('x2',X(b.m));vl.style.opacity=1;hd.setAttribute('cx',X(b.m));hd.setAttribute('cy',Y(b.r));hd.style.opacity=1;
+  const L=LVL[lvl(b.r)];let html;
+  if(o.events){const cand=o.events.filter(q=>q.minute>=b.m-5&&q.minute<b.m+5).sort((a,c)=>c.duration_seconds-a.duration_seconds)[0];
+   if(cand){const T=TYPES[cand.posture_state];html=`<b>${fmtT(cand.minute)}</b> &nbsp;Risk: ${L.t}<div class="r"><span>Event</span><span>${T.short}</span></div><div class="r"><span>Duration</span><span>${fmtS(cand.duration_seconds)}</span></div><div class="r"><span>Activity</span><span>${cand.activity}</span></div><div class="r"><span>Possible contributor</span><span>${T.contrib.split(' ').slice(0,3).join(' ')}</span></div><div style="margin-top:4px;color:#9FE3D0">${cand.recommendation}</div>`}
+   else html=`<b>${fmtT(b.m)}</b> &nbsp;Risk: ${L.t} (${b.r})<div class="r"><span>Activity</span><span>${actAt(b.m)}</span></div><div style="margin-top:4px;color:#C9D4DF">No posture deviations logged in this window.</div>`}
+  else html=`<b>${fmtT(b.m)}</b> &nbsp;Avg risk: ${L.t} (${b.r})<div class="r"><span>Range</span><span>${b.min}–${b.max}</span></div><div class="r"><span>Typical activity</span><span>${actAt(b.m)}</span></div>`;
+  showTip(el,html,X(b.m),Y(b.r))};
+ svg.querySelector('.ov').addEventListener('pointermove',mv);svg.querySelector('.ov').addEventListener('pointerdown',mv);svg.querySelector('.ov').addEventListener('pointerleave',()=>{hideTip(el);vl.style.opacity=0;hd.style.opacity=0});
+}
+function heatmap(days){
+ const cols=HOURS.length;let h=`<div class="heat" style="grid-template-columns:64px repeat(${cols},1fr)"><span></span>${HOURS.map(x=>`<span class="lab" style="justify-content:center">${hLab(x).replace(' ','')}</span>`).join('')}`;
+ days.forEach(d=>{const s=series(d);h+=`<span class="lab">${d.name} ${d.label.split(' ')[1]}</span>`;HOURS.forEach(hr=>{const v=s.filter(p=>p.m>=hr*60&&p.m<hr*60+60&&p.r!=null).map(p=>p.r);if(!v.length){h+=`<div class="c" style="background:var(--surface-2)" title="No data"></div>`;return}
+  const a=Math.round(v.reduce((x,y)=>x+y,0)/v.length);h+=`<div class="c" style="background:${riskCol(a,.85)}" title="${d.name} ${hLab(hr)} · avg risk ${a} (${LVL[lvl(a)].t})">${a}</div>`})});
+ return h+'</div>'}
+function figureSVG(id,o={}){
+ return `<svg id="${id}" class="fig" viewBox="0 0 420 360" role="img" aria-label="Seated posture visualisation"><line class="fl" x1="20" y1="332" x2="404" y2="332"/>
+ <g class="fu"><path d="M108 232H206M156 232V318M122 322H190M106 232Q96 170 102 118"/><path d="M238 204H410"/><path d="M398 208V332"/></g>
+ <rect x="262" y="194" width="46" height="6" rx="3" style="fill:var(--ink-3);opacity:.6"/><rect x="318" y="195" width="14" height="6" rx="3" style="fill:var(--ink-3);opacity:.6"/>
+ <rect x="360" y="150" width="4" height="46" style="fill:var(--ink-3);opacity:.5"/><rect x="345" y="196" width="34" height="5" rx="2" style="fill:var(--ink-3);opacity:.5"/>
+ <line class="fdash" x1="180" y1="94" x2="352" y2="94"/><text x="292" y="84">eye level</text>
+ <g class="f-mon" style="transform-origin:360px 140px"><rect class="fscr" x="357" y="112" width="9" height="64" rx="3"/></g>
+ <path class="fb" d="M150 228L232 232L238 318L268 320" style="stroke-width:9;opacity:.55"/>
+ <g class="f-torso" style="transform-origin:150px 228px"><path class="fb" d="M150 228V134"/><path class="fb" d="M150 138L176 190L262 196L276 194" style="stroke-width:7;opacity:.8"/><circle class="fj" cx="150" cy="228" r="6"/><circle class="fj" cx="176" cy="190" r="5"/>
+  <g class="f-head" style="transform-origin:150px 134px"><path class="fb" d="M150 134V114" style="stroke-width:7"/><circle class="fh" cx="150" cy="94" r="19"/><path class="fb" d="M168 92l8 6-8 3" style="stroke-width:3"/><circle cx="160" cy="90" r="2" style="fill:var(--ink)"/></g></g>
+ </svg>`}
+function setFigure(id,o){const s=document.getElementById(id);if(!s)return;s.querySelector('.f-torso').style.transform=`rotate(${o.torso}deg)`;s.querySelector('.f-head').style.transform=`rotate(${o.neck}deg)`;s.querySelector('.f-mon').style.transform=`translateY(${-20*(o.raise||0)}px)`;if(o.color)s.style.setProperty('--fig',o.color)}
+const toneCol=v=>v<35?'var(--good)':v<65?'var(--warn)':'var(--bad)';
+function bodyMap(dev,sel){
+ const c=k=>`--rc:${riskCol(dev[k]*2.2,.35+Math.min(dev[k],40)/60)}`;
+ const g=(k,inner)=>`<g class="rg" data-act="region" data-v="${k}" style="${c(k)};cursor:pointer" tabindex="0" role="button" aria-label="${REGIONS[k]}">${inner}</g>`;
+ const sh=(x)=>`<style>.rg .s{fill:var(--rc)}.rg .l{stroke:var(--rc);fill:none;stroke-linecap:round}</style>`;
+ const ring=k=>sel===k?'stroke="var(--brand)" stroke-width="3" stroke-dasharray="5 4"':'';
+ return `<svg viewBox="0 0 240 440" width="240" height="440" style="max-width:100%;height:auto" role="img" aria-label="Body region map">${sh()}
+ ${g('neck',`<circle class="s" cx="120" cy="40" r="26" ${ring('neck')}/><rect class="s" x="108" y="64" width="24" height="20" rx="8"/>`)}
+ ${g('shoulders',`<ellipse class="s" cx="76" cy="100" rx="26" ry="15" ${ring('shoulders')}/><ellipse class="s" cx="164" cy="100" rx="26" ry="15"/>`)}
+ ${g('back',`<path class="s" d="M84 106Q120 96 156 106L152 232Q120 246 88 232Z" ${ring('back')}/>`)}
+ ${g('elbows',`<circle class="s" cx="48" cy="172" r="13" ${ring('elbows')}/><circle class="s" cx="192" cy="172" r="13"/><line class="l" x1="60" y1="112" x2="49" y2="160" stroke-width="20" style="opacity:.55"/><line class="l" x1="180" y1="112" x2="191" y2="160" stroke-width="20" style="opacity:.55"/>`)}
+ ${g('wrists',`<circle class="s" cx="57" cy="248" r="12" ${ring('wrists')}/><circle class="s" cx="183" cy="248" r="12"/><line class="l" x1="48" y1="184" x2="56" y2="236" stroke-width="18" style="opacity:.5"/><line class="l" x1="192" y1="184" x2="184" y2="236" stroke-width="18" style="opacity:.5"/>`)}
+ ${g('lower',`<path class="s" d="M88 236Q120 250 152 236L156 268H84Z" ${ring('lower')}/><line class="l" x1="102" y1="270" x2="100" y2="340" stroke-width="34"/><line class="l" x1="138" y1="270" x2="140" y2="340" stroke-width="34"/><line class="l" x1="100" y1="344" x2="100" y2="416" stroke-width="26"/><line class="l" x1="140" y1="344" x2="140" y2="416" stroke-width="26"/>`)}
+ </svg>`}
+const emptyState=(ic,title,text,tone='',extra='')=>`<div class="empty"><div class="eic ${tone}">${ico(ic,'')}</div><h3>${title}</h3><p>${text}</p>${extra}</div>`;
+const skeleton=()=>`<div class="grid g3" style="margin-bottom:16px"><div class="skel" style="height:150px"></div><div class="skel" style="height:150px"></div><div class="skel" style="height:150px"></div></div><div class="skel" style="height:320px;margin-bottom:16px"></div><div class="grid g2"><div class="skel" style="height:220px"></div><div class="skel" style="height:220px"></div></div><p class="muted" style="text-align:center;margin-top:16px;display:flex;gap:10px;justify-content:center;align-items:center"><span class="spin"></span>Loading analysis…</p>`;
+/* ================= state + shared ui ================= */
+const S={route:'overview',period:'today',cat:'neutral',region:'neck',pf:'all',rf:'all',lf:'all',evN:20,fix:{},recs:{},rp:'all',plan:{},nf:'all',notifs:NOTIFS0.map(n=>({...n})),
+ prog:'weekly',baseline:'established',rep:'idle',repHist:[{t:'Weekly Ergonomic Assessment',p:'Sep 14–20, 2026',d:'Sep 21'}],wsApplied:false,wsSel:'monitor',sensors:{camera:1,imu:1,desk:1},
+ sim:{dev:12,dur:45,ctx:'low',rec:false},care:{on:true,scope:{summary:1,timeline:1,regions:1,reports:0}},note:[{by:'Dr. R. Iyer (physiotherapist)',t:'The afternoon pattern is still visible. Try the 2:45 PM movement reset for two weeks and compare wrist and forward-head exposure.'}],
+ theme:'system',sens:'balanced',demoSt:'',archSel:0,pop:false,side:false,statesGal:'loading',live:null,moves:{chin:false,thoracic:false,wrist:false,reset:false},routine:{step:0,sec:0,iv:null}};
+const PERLBL={today:'today',yesterday:'yesterday',week:'this week',lastweek:'last week'};
+const head=(t,s,a='')=>`<div class="ph"><div><h1>${t}</h1>${s?`<p>${s}</p>`:''}</div><div class="act">${a}</div></div>`;
+const perSeg=()=>`<div class="seg" role="tablist" aria-label="Period">${Object.entries(PERIODS).map(([k,v])=>`<button class="${S.period===k?'on':''}" data-act="period" data-v="${k}">${v.label}</button>`).join('')}</div>`;
+const noData=()=>emptyState('timeline','No data available for selected period','Sensors were not connected during this range, so ErgoSense has nothing to analyse. Pick another period to continue.','',`<button class="btn pri sm" data-act="period" data-v="today">Go to today</button>`);
+const chipDelta=(d,up)=>`<span class="chip ${up?'good':'warn'}">${d.startsWith('−')?'▼':d.startsWith('+')?'▲':'●'} ${d}</span>`;
+function toast(m){let t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('on'),2600)}
+function modal(html){closeModal();const d=document.createElement('div');d.className='scrim';d.id='modal';d.innerHTML=`<div class="modal" role="dialog" aria-modal="true"><button class="ib x" data-act="closeModal" aria-label="Close">${ico('x')}</button>${html}</div>`;d.addEventListener('click',e=>{if(e.target===d)closeModal()});document.body.appendChild(d)}
+function closeModal(){const m=$('#modal');if(m)m.remove()}
+function animateCounters(root,anim=true){$$('[data-count]',root).forEach(el=>{const to=+el.dataset.count,f=el.dataset.fmt,fmt=v=>f==='dur'?fmtH(Math.round(v)):f==='pct'?Math.round(v)+'%':Math.round(v)+(el.dataset.suf||'');if(!anim||matchMedia('(prefers-reduced-motion: reduce)').matches){el.textContent=fmt(to);return}
+ const t0=performance.now(),D=900;const step=t=>{const p=clamp((t-t0)/D,0,1),e=1-Math.pow(1-p,3);el.textContent=fmt(to*e);if(p<1)requestAnimationFrame(step)};requestAnimationFrame(step)})}
+const cnt=(v,f,suf='')=>`<span data-count="${v}" data-fmt="${f}" data-suf="${suf}">0</span>`;
+const M_MIN={today:402,yesterday:125,week:2506,lastweek:2680},DSC={today:1,yesterday:.3,week:5.6,lastweek:6.1};
+function mountRisk(sel,h=280){const el=$(sel);if(!el)return;const ds=pDays(S.period);if(ds.length===1)riskChart(el,{series:series(ds[0]),events:events(ds[0]),h,lunch:!ds[0].weekend});else riskChart(el,{series:pSeries(S.period),range:true,h})}
+const riskLegend=()=>`<div class="legend"><span><i style="background:var(--good)"></i>Low</span><span><i style="background:var(--warn)"></i>Moderate</span><span><i style="background:var(--bad)"></i>High</span><span class="muted">Hover or tap the line for details</span></div>`;
+
+/* ---------- risk load ---------- */
+const LOADFIX=[{id:'mon',t:'Raise monitor ≈ 4 cm',d:8},{id:'brk',t:'Micro-breaks every 45 min',d:7},{id:'slump',t:'2:45 PM movement break',d:4},{id:'std',t:'Three short standing intervals',d:3},{id:'wr',t:'Adjust keyboard height',d:3}];
+const loadVal=()=>Math.max(4,LOAD[S.period]-Object.keys(S.fix).filter(k=>S.fix[k]).reduce((a,k)=>a+(LOADFIX.find(x=>x.id===k)||{d:0}).d,0)*(LOAD[S.period]/34));
+function loadHTML(){const base=LOAD[S.period],v=Math.round(loadVal()),lab=v<25?'Low':v<45?'Moderate':'High',tone=v<25?'good':v<45?'warn':'bad',f=base/34;
+ const drivers=[['Posture deviation',14],['Static time',10],['Repetitive load',6],['Workstation mismatch',4]];
+ return `<div class="ch"><div><h3>Cumulative risk load</h3><p>Builds up from how long and how often risky positions are held</p></div><span class="chip ${tone}">${lab}</span></div>
+ <div style="display:flex;justify-content:center;position:relative">${gauge(v,100,{w:250})}<div style="position:absolute;bottom:0;text-align:center"><div class="num" style="font-size:38px;font-weight:800;line-height:1">${v}</div><small class="muted">out of 100${v<base?` · was ${base}`:''}</small></div></div>
+ <div style="margin:16px 0 4px">${drivers.map(d=>`<div class="hbar"><span>${d[0]}</span><div class="bar"><i style="width:${Math.min(100,d[1]*f*4.2)}%;background:var(--brand)"></i></div><b>${Math.round(d[1]*f)}</b></div>`).join('')}</div>
+ <p class="tiny b" style="margin:12px 0 8px">What would lower it? <span class="muted" style="font-weight:500">Tap to preview</span></p>
+ <div class="tags">${LOADFIX.map(x=>`<button class="chip ${S.fix[x.id]?'good':''}" style="padding:6px 11px;font-size:12.5px;${S.fix[x.id]?'':'border:1px solid var(--line)'}" data-act="fix" data-v="${x.id}">${S.fix[x.id]?'✓ ':''}${x.t} <b>−${Math.round(x.d*f)}</b></button>`).join('')}</div>`}
+const repaint=(sel,html)=>{const e=$(sel);if(e)e.innerHTML=html};
+
+/* ---------- posture distribution ---------- */
+function catHTML(){const P=S.period,ds=dist(P),items=Object.keys(CATS).map(k=>({k,label:CATS[k].label,v:ds[k],col:CATS[k].col})),sel=S.cat,c=CATS[sel],mins=Math.round(ds[sel]*M_MIN[P]/100),evs=pEvents(P).filter(e=>e.posture_state===sel).length;
+ return `<div class="split"><div class="donut">${donut(items,{sel})}<div class="mid"><b>${ds[sel]}%</b><small>${c.label}</small></div></div>
+ <div class="cat-list">${items.map(i=>`<button class="cat ${sel===i.k?'on':''}" data-act="cat" data-v="${i.k}"><i class="sw" style="background:${i.col}"></i><span class="n">${i.label}</span><span class="p">${i.v}%</span></button>`).join('')}</div></div>
+ <div class="detail"><b>${c.label}</b> <span class="muted">· ${fmtH(mins)} of monitored time${sel==='neutral'?'':` · ${evs} logged events`}</span><p style="margin:4px 0 8px;color:var(--ink-2)">${c.desc}</p>
+ <div class="kv" style="margin:0"><div><small>Likely contributor</small><b>${c.contrib}</b></div><div><small>Suggested focus</small><b>${c.tip}</b></div></div></div>`}
+
+/* ---------- event log ---------- */
+function logHTML(evs,multi){
+ let f=evs.filter(e=>(S.pf==='all'||e.posture_state===S.pf)&&(S.rf==='all'||e.body_region===S.rf)&&(S.lf==='all'||e.risk_level===S.lf));
+ const opts=(o,cur)=>Object.entries(o).map(([k,v])=>`<option value="${k}" ${cur===k?'selected':''}>${v}</option>`).join('');
+ const filt=`<div class="filters"><select data-chg="pf" aria-label="Posture type"><option value="all">All posture types</option>${opts(Object.fromEntries(Object.entries(TYPES).map(([k,v])=>[k,v.label])),S.pf)}</select><select data-chg="rf" aria-label="Body region"><option value="all">All body regions</option>${opts(REGIONS,S.rf)}</select><select data-chg="lf" aria-label="Risk level"><option value="all">All risk levels</option>${opts({low:'Low',moderate:'Moderate',high:'High'},S.lf)}</select><span class="muted" style="align-self:center">${f.length} events</span></div>`;
+ if(!f.length)return filt+emptyState('check','No significant ergonomic risk detected','Nothing matches these filters. That is a good sign, or try widening the filters.','good');
+ const shown=f.slice(0,S.evN);
+ return filt+shown.map(e=>{const T=TYPES[e.posture_state],L=LVL[e.risk_level],d=DAYS[e.day];
+  return `<details class="fx"><summary><div style="min-width:74px"><b>${fmtT(e.minute)}</b>${multi?`<small class="muted" style="display:block">${d.name} ${d.label}</small>`:''}</div><div style="flex:1;min-width:0"><b>${T.short}</b><small class="muted" style="display:block">${REGIONS[e.body_region]} · ${fmtS(e.duration_seconds)} · ${e.activity}</small></div><span class="chip ${L.c}">${L.t}</span><span class="chev">${ico('chev')}</span></summary>
+  <div class="body"><div class="kv"><div><small>Possible contributor</small><b>${e.contributor}</b></div><div><small>Workstation state</small><b>Desk ${e.workstation_state.desk_height_cm} cm · Monitor ${e.workstation_state.monitor_height_cm} cm</b></div><div><small>Model confidence</small><b>${Math.round(e.confidence*100)}%</b></div></div><div class="reco">${ico('spark')}<span>${e.recommendation}</span></div>
+  <p style="margin-top:10px"><button class="btn sm" data-act="rawEvt" data-v="${e.id}">View raw event</button></p></div></details>`}).join('')+(f.length>S.evN?`<p style="text-align:center;margin-top:12px"><button class="btn sm" data-act="moreEv">Show more (${f.length-S.evN})</button></p>`:'')}
+
+/* ================= overview ================= */
+function pgOverview(){
+ const P=S.period;const sub=`Here's how your ergonomic behavior has looked ${PERLBL[P]||'in this period'}.`;
+ const hello=`<div class="ph"><div class="greet"><h1>Good morning, Alex</h1><p class="muted" style="margin-top:6px;font-size:15px">${sub}</p></div><div class="act">${perSeg()}</div></div>`;
+ if(!PERIODS[P].days.length)return hello+noData();
+ const A=ATTN[P],kp=KPIS[P];
+ return hello+`
+ <div class="hero"><div class="card status"><div class="ch"><div><h3>Current status</h3><p>Live from your sensors</p></div><span class="pill"><i class="dot"></i>Monitoring</span></div>
+  <div class="big" style="color:var(--warn)"><i class="dot warn" style="width:16px;height:16px"></i>MODERATE</div>
+  <div class="facts"><div><small>Current ergonomic risk</small><b style="color:var(--warn)">Moderate</b></div><div><small>Current posture</small><b>Forward-head tendency</b></div><div><small>Session</small><b>54 min</b></div><div><small>Next recommended break</small><b>in 6 min</b></div></div>
+  <div style="margin-top:18px"><div class="bar"><i style="width:90%;background:var(--warn)"></i></div><p class="tiny muted" style="margin-top:6px">54 of 60 minutes until your suggested movement break</p></div></div>
+ <div class="card" id="loadcard">${loadHTML()}</div></div>
+
+ <div class="card compare" style="margin-top:16px;background:var(--ink);color:var(--bg);border-color:var(--ink)"><div><h3 style="font-size:20px">Why ErgoSense?</h3><p style="opacity:.7;margin-top:6px">A posture detector stops at the alert. ErgoSense keeps going.</p></div>
+  <div style="display:grid;gap:14px"><div class="flowrow"><span class="tiny" style="width:120px;opacity:.65">Traditional systems</span><span class="step" style="background:rgba(255,255,255,.1);color:inherit">Detect</span><span style="opacity:.5">→</span><span class="step" style="background:rgba(255,255,255,.1);color:inherit">Alert</span></div>
+  <div class="flowrow"><span class="tiny b" style="width:120px">ErgoSense</span>${['Detect','Understand','Personalize','Adapt','Learn'].map((s,i,a)=>`<span class="step hi" style="background:${['#0A7C86','#0F8F8A','#12946A','#2E6BD8','#5B7CFA'][i]}">${s}</span>${i<a.length-1?'<span style="opacity:.5">→</span>':''}`).join('')}</div></div></div>
+
+ <div class="sec"><h2>Key indicators</h2><p>Select a card for its trend</p></div>
+ <div class="grid g6">${kp.map(k=>`<button class="card kpi" data-act="kpi" data-v="${k.k}"><span class="l">${k.l}</span><span class="v">${cnt(k.v,k.f==='score'?'int':k.f)}${k.f==='score'?'<small>/100</small>':''}</span>${spark(sparkFor(P+k.k,k.v,12,k.inv?-.15:.1),k.inv?'var(--warn)':'var(--brand)')}<span class="cmp">${chipDelta(k.d,k.up)}<span>${k.c}</span></span></button>`).join('')}</div>
+
+ <div class="card" style="margin-top:16px"><div class="ch"><div><h3>Why is the Risk Index 68?</h3><p>Transparent components of today's simulated score</p></div><span class="chip warn">Moderate</span></div><div class="risk-breakdown">
+<div class="rb"><span>Posture exposure</span><div class="bar"><i style="width:69%;background:var(--brand)"></i></div><b>24/35</b></div>
+<div class="rb"><span>Static duration</span><div class="bar"><i style="width:68%;background:var(--warn)"></i></div><b>17/25</b></div>
+<div class="rb"><span>Movement pattern</span><div class="bar"><i style="width:73%;background:var(--brand)"></i></div><b>11/15</b></div>
+<div class="rb"><span>Workstation alignment</span><div class="bar"><i style="width:60%;background:var(--blue)"></i></div><b>9/15</b></div>
+<div class="rb"><span>Break behavior</span><div class="bar"><i style="width:70%;background:var(--warn)"></i></div><b>7/10</b></div></div><p class="tiny muted" style="margin-top:10px">Higher exposure contributes more to the index. The index is a prototype ergonomic measure, not a medical score.</p></div>
+
+ <div class="grid g-12" style="margin-top:16px;align-items:start"><div class="card"><div class="ch"><div><h3>Posture distribution</h3><p>Share of monitored time · select a category</p></div></div><div id="catwrap">${catHTML()}</div></div>
+ <div class="card"><div class="ch"><div><h3>What needs attention?</h3><p>Ranked by exposure and repetition</p></div><span class="chip warn">3 findings</span></div>
+ <details class="fx" open><summary><div class="fx-ico" style="background:var(--blue-soft);color:var(--blue)">${ico('posture')}</div><div><b>Forward head posture</b><small class="muted" style="display:block">Detected ${A.fwd[0]} times · ${fmtH(A.fwd[1])} total exposure</small></div><span class="chev">${ico('chev')}</span></summary><div class="body"><div class="kv"><div><small>Most common</small><b>${A.fwd[2]}</b></div><div><small>Likely contributor</small><b>Monitor positioned slightly below optimal eye level</b></div></div><div class="reco">${ico('spark')}<span>Raise monitor approximately 3–5 cm and maintain a comfortable viewing distance.</span></div><p style="margin-top:10px"><button class="btn sm" data-act="nav" data-v="timeline">See when it happens</button></p></div></details>
+ <details class="fx"><summary><div class="fx-ico" style="background:var(--warn-soft);color:var(--warn)">${ico('habits')}</div><div><b>Prolonged static sitting</b><small class="muted" style="display:block">Detected ${A.st[0]} session${A.st[0]>1?'s':''} · longest ${A.st[1]} min</small></div><span class="chev">${ico('chev')}</span></summary><div class="body"><div class="reco">${ico('spark')}<span>Introduce a short movement break before the 60-minute mark.</span></div></div></details>
+ <details class="fx"><summary><div class="fx-ico" style="background:var(--bad-soft);color:var(--bad)">${ico('alert')}</div><div><b>Wrist deviation</b><small class="muted" style="display:block">Detected ${A.wr} events · mostly high-intensity typing</small></div><span class="chev">${ico('chev')}</span></summary><div class="body"><div class="reco">${ico('spark')}<span>Review keyboard height and wrist position.</span></div></div></details></div></div>
+
+ <div class="card" style="margin-top:16px"><div class="ch"><div><h3>Risk timeline</h3><p>${PERIODS[P].days.length>1?'Average across the period with min–max range':'Estimated ergonomic risk across the workday'}</p></div><button class="btn sm" data-act="nav" data-v="timeline">Open full timeline</button></div><div id="ov-rc"></div>${riskLegend()}</div>
+
+ <div class="sec"><h2>Your risk patterns</h2><p>Recurring behaviors found in your data</p></div>
+ <div class="grid g3">
+ <div class="card insight"><span class="ai-tag">${ico('spark')}AI insight <span class="chip">Confidence moderate</span></span><h3>Afternoon slump</h3><p>Your ergonomic risk increases by <b>21%</b> between 2 PM and 4 PM.</p><p class="tiny muted">Possible explanation: long uninterrupted coding sessions.</p><div class="reco">${ico('recs')}<span>Schedule a movement break around <b>2:45 PM</b>.</span></div></div>
+ <div class="card insight"><span class="ai-tag">${ico('spark')}AI insight <span class="chip">Confidence high</span></span><h3>Deep work pattern</h3><p>Your longest static sessions occur during focused programming. Average uninterrupted session: <b>54 min</b>.</p><div class="reco">${ico('recs')}<span>Use adaptive micro-breaks rather than frequent notifications.</span></div></div>
+ <div class="card insight"><span class="ai-tag">${ico('spark')}AI insight <span class="chip">Confidence moderate</span></span><h3>End-of-day fatigue pattern</h3><p>Postural deviation increases after <b>4 PM</b>.</p><div class="reco">${ico('recs')}<span>Reduce continuous screen exposure and introduce movement before the final work block.</span></div></div></div>`}
+function mtOverview(anim){mountRisk('#ov-rc',280);animateCounters($('#page'),anim)}
+
+/* ================= live ================= */
+const LIVEFEED=[['10:51:37','Prolonged static position detected'],['10:44:20','Posture recovered'],['10:44:08','Forward head deviation — 12 sec'],['10:42:12','Neutral posture detected']];
+function pgLive(){
+ if(!S.live)S.live={sec:5072,clock:10*3600+52*60,neck:18,torso:7,dev:0,tick:0,feed:LIVEFEED.map(x=>x.slice())};
+ const sn=S.sensors,down=Object.entries(sn).filter(([k,v])=>!v).map(([k])=>({camera:'Camera',imu:'Wearable IMU',desk:'Desk height sensor'}[k]));
+ const camOff=!sn.camera;
+ return head('Live ergonomic monitor','Simulated real-time feed from the camera, IMU and desk sensors.',`<button class="btn sm" data-act="toggleSensor" data-v="camera">${camOff?'Restore camera':'Simulate camera unavailable'}</button><button class="btn sm" data-act="toggleSensor" data-v="imu">${sn.imu?'Simulate sensor disconnect':'Reconnect IMU'}</button>`)+
+ (down.length?`<div class="banner">${ico('sensor')}<div><b>${down.join(' and ')} ${down.length>1?'are':'is'} not connected.</b><br><span class="muted">${camOff?'Pose tracking is paused. ErgoSense is estimating from the remaining sensors with reduced confidence.':'Wearable data is paused. Posture from the camera continues; movement estimates are less precise.'}</span></div></div>`:'')+
+ `<div class="grid g-21" style="align-items:start"><div class="card"><div class="ch"><div style="display:flex;gap:14px;flex-wrap:wrap;align-items:center"><span class="pill"><i class="dot ${down.length?'warn':''}"></i>${down.length?'Partial sensing':'Monitoring'}</span><span class="muted">Session <b id="lv-time" style="color:var(--ink)">01:24:32</b></span><span class="muted">Activity <b style="color:var(--ink)">Coding</b></span></div><span id="lv-risk" class="chip good">Risk: Low</span></div>
+ ${camOff?emptyState('camera','Camera unavailable','The camera feed stopped. Check the privacy shutter or the USB connection. Tracking continues from IMU and desk sensors.','warn'):`<div style="max-width:560px;margin:0 auto">${figureSVG('lv-fig')}</div>`}
+ <p class="tiny muted" style="text-align:center;margin-top:8px" id="lv-post">Posture: mostly neutral</p></div>
+ <div style="display:grid;gap:16px"><div class="card"><div class="ch"><div><h3>Estimated ergonomic metrics</h3><p>Prototype simulation, not clinical measurements</p></div></div>
+ <div class="grid g2" style="gap:10px"><div class="metric"><small>Neck angle</small><b id="lv-neck">18°</b></div><div class="metric"><small>Torso angle</small><b id="lv-torso">7°</b></div><div class="metric"><small>Shoulder symmetry</small><b id="lv-sh">94%</b></div><div class="metric"><small>Wrist alignment</small><b id="lv-wr">89%</b></div><div class="metric"><small>Desk height</small><b>72 cm</b></div><div class="metric"><small>Monitor height</small><b style="font-size:16px;padding:3px 0">Near optimal</b></div><div class="metric" style="grid-column:span 2"><small>Movement</small><b id="lv-mov">Low</b></div></div></div>
+ <div class="card"><div class="ch"><div><h3>Event feed</h3><p>Newest first</p></div><span class="chip brand"><i class="dot" style="width:6px;height:6px"></i>Live</span></div><div class="feed" id="lv-feed">${S.live.feed.map(f=>`<div><time>${f[0]}</time><span>${f[1]}</span></div>`).join('')}</div></div></div></div>`}
+const clk=s=>pad(Math.floor(s/3600))+':'+pad(Math.floor(s/60)%60)+':'+pad(s%60);
+function liveTick(){const L=S.live;if(!$('#lv-time')&&S.sensors.camera&&!$('#lv-neck')){return}
+ L.sec++;L.clock++;L.tick++;const add=t=>{L.feed.unshift([clk(L.clock),t]);L.feed.length=Math.min(L.feed.length,14);repaint('#lv-feed',L.feed.map(f=>`<div><time>${f[0]}</time><span>${f[1]}</span></div>`).join(''))};
+ if(L.dev>0){L.dev--;if(!L.dev)add('Posture recovered')}else if(L.tick%19===0){L.dev=6+(L.tick%5);add(`Forward head deviation — ${L.dev} sec`)}else if(L.tick%37===0)add('Neutral posture detected');else if(L.tick%53===0)add('Prolonged static position detected');
+ const tn=L.dev>0?32+Math.sin(L.tick)*1.5:18+Math.sin(L.tick/3)*2.4;L.neck+=(tn-L.neck)*.6;L.torso=7+Math.sin(L.tick/4)*2;
+ const set=(id,v)=>{const e=$('#'+id);if(e)e.textContent=v};
+ set('lv-time',clk(L.sec));set('lv-neck',(S.sensors.camera?'':'≈ ')+Math.round(L.neck)+'°');set('lv-torso',Math.round(L.torso)+'°');set('lv-sh',Math.round(94+Math.sin(L.tick/2))+'%');set('lv-wr',Math.round(89+Math.cos(L.tick/3)*2)+'%');set('lv-mov',L.tick%30<8?'Moderate':'Low');
+ const r=$('#lv-risk');if(r){const dv=L.neck>27;r.className='chip '+(dv?'warn':'good');r.textContent='Risk: '+(dv?'Moderate':'Low')}
+ set('lv-post',L.neck>27?'Posture: forward head deviation (temporary)':'Posture: mostly neutral');setFigure('lv-fig',{neck:L.neck*.8,torso:L.torso,color:L.neck>27?'var(--warn)':'var(--brand)'})}
+function mtLive(){if(S.live&&document.getElementById('lv-fig'))setFigure('lv-fig',{neck:S.live.neck*.8,torso:S.live.torso});clearInterval(S.liveT);S.liveT=setInterval(liveTick,1000)}
+
+/* ================= posture ================= */
+function regStats(k,P){const b=REGION_BASE[k],f=FACT[P]||1,x=Math.round(b.x*f),m=Math.round(b.m*f),ds=DSC[P];return{h:100-x-m,m,x,exp:Math.round(b.exp*ds*f),ev:Math.round(b.ev*ds*f),tr:b.tr,tc:b.tc,rec:b.rec}}
+function regionHTML(){const P=S.period,r=S.region,st=regStats(r,P),att=st.x>=8||r==='wrists';
+ return `<div class="ch"><div><h3>${REGIONS[r]}</h3><p>Estimated ergonomic exposure</p></div><span class="chip ${att?'warn':'good'}">${att?'Needs attention':'Within your range'}</span></div>
+ <div class="bar" style="height:14px;margin-bottom:10px"><i style="width:${st.h}%;background:var(--good)"></i><i style="width:${st.m}%;background:var(--warn)"></i><i style="width:${st.x}%;background:var(--bad)"></i></div>
+ <div class="legend" style="margin-bottom:14px"><span><i style="background:var(--good)"></i>Healthy ${st.h}%</span><span><i style="background:var(--warn)"></i>Moderate deviation ${st.m}%</span><span><i style="background:var(--bad)"></i>High deviation ${st.x}%</span></div>
+ <div class="kv"><div><small>Exposure duration</small><b>${fmtH(st.exp)}</b></div><div><small>Events</small><b>${st.ev}</b></div><div><small>Trend</small><b><span class="chip ${st.tc}">${st.tr}</span></b></div></div><div class="reco">${ico('spark')}<span>${st.rec}</span></div>`}
+function pgPosture(){
+ const P=S.period,H=head('Posture analysis','Body-region exposure and the events behind it.',perSeg());if(!PERIODS[P].days.length)return H+noData();
+ const dev={};Object.keys(REGIONS).forEach(k=>{const s=regStats(k,P);dev[k]=s.m+s.x});
+ return H+`<div class="grid g-12" style="align-items:start"><div class="card"><div class="ch"><div><h3>Body-region heatmap</h3><p>Select a region</p></div></div><div id="bodywrap" style="display:grid;place-items:center">${bodyMap(dev,S.region)}</div><div class="legend" style="justify-content:center;margin-top:8px"><span><i style="background:${riskCol(0,.5)}"></i>Low</span><span><i style="background:${riskCol(45,.7)}"></i>Moderate</span><span><i style="background:${riskCol(85,.9)}"></i>High</span></div></div>
+ <div style="display:grid;gap:16px"><div class="card" id="regdetail">${regionHTML()}</div>
+ <div class="grid g3" style="gap:10px">${Object.keys(REGIONS).map(k=>{const s=regStats(k,P);return `<button class="card flat" style="text-align:left;padding:14px;${S.region===k?'border-color:var(--brand);background:var(--brand-soft)':''}" data-act="region" data-v="${k}"><b>${REGIONS[k]}</b><div class="bar" style="margin:8px 0"><i style="width:${s.h}%;background:var(--good)"></i><i style="width:${s.m}%;background:var(--warn)"></i><i style="width:${s.x}%;background:var(--bad)"></i></div><small class="muted">${s.h}% healthy · ${s.tr}</small></button>`}).join('')}</div></div></div>
+ <div class="card" style="margin-top:16px;border-color:var(--brand)"><div class="ch"><div><span class="ai-tag">${ico('spark')}Suggested movement support</span><h3 style="margin-top:4px">Your posture data points to a short upper-body reset</h3><p>Forward-head and wrist events are recurring, especially during afternoon coding.</p></div><button class="btn pri sm" data-act="nav" data-v="movement">Open Movement & Recovery</button></div><div class="grid g3" style="gap:10px"><div class="metric"><small>Chin tuck</small><b>45 sec</b></div><div class="metric"><small>Thoracic extension</small><b>45 sec</b></div><div class="metric"><small>Wrist mobility</small><b>30 sec</b></div></div></div>
+ <div class="sec"><h2>Posture events</h2><p>Filter and expand any event</p></div><div class="card" id="evlog">${logHTML(pEvents(P),PERIODS[P].days.length>1)}</div>`}
+
+/* ================= timeline ================= */
+function pgTimeline(){
+ const P=S.period,H=head('Risk timeline','Estimated ergonomic risk across the workday, with the events behind each rise.',perSeg());if(!PERIODS[P].days.length)return H+noData();
+ const ds=pDays(P),last=ds[ds.length-1],hm=Array.from({length:7},(_,i)=>DAYS[clamp(last.idx-6+i,0,13)]);
+ return H+`<div class="card"><div class="ch"><div><h3>${ds.length===1?`${ds[0].name}, ${ds[0].label}`:'Average risk across '+PERIODS[P].label.toLowerCase()}</h3><p>Circles mark events lasting 4 minutes or longer</p></div>${riskLegend()}</div><div id="tl-rc"></div></div>
+ <div class="grid g-21" style="margin-top:16px;align-items:start"><div class="card"><div class="ch"><div><h3>Risk by day and hour</h3><p>Average estimated risk per hour</p></div></div>${heatmap(hm)}</div>
+ <div class="card soft"><h3 style="margin-bottom:8px">Reading this chart</h3><p style="color:var(--ink-2)">Mornings stay low. Risk edges up around 11 AM, resets at lunch, then climbs from 2 PM as forward-head posture repeats. It peaks near 4:45 PM after a 74-minute static session and improves after movement around 5 PM.</p><p class="tiny muted" style="margin-top:10px">Risk is an ergonomic exposure estimate, not a health assessment.</p></div></div>
+ <div class="sec"><h2>Event log</h2></div><div class="card" id="evlog">${logHTML(pEvents(P),ds.length>1)}</div>`}
+function mtTimeline(){mountRisk('#tl-rc',340)}
+/* ================= habits ================= */
+function pgHabits(){
+ const P=S.period,H0=head('Work habits','Behaviour patterns beyond posture: sessions, breaks, movement and input intensity.',perSeg());if(!PERIODS[P].days.length)return H0+noData();
+ const h=HAB[P],cells=[['Total screen time',h.screen],['Continuous sitting',h.sit],['Longest uninterrupted session',h.long],['Break frequency',h.brk],['Average session',h.avg],['Movement frequency',h.mov],['Standing time',h.stand],['Keyboard intensity',h.kb],['Mouse intensity',h.ms]];
+ const sess=SESS.map(s=>s[1]);
+ return H0+`<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px">${cells.map(c=>`<div class="metric"><small>${c[0]}</small><b>${c[1]}</b></div>`).join('')}</div>
+ <div class="grid g2" style="margin-top:16px"><div class="card"><div class="ch"><div><h3>Hourly activity</h3><p>Keyboard and mouse intensity (0–100)</p></div><div class="legend"><span><i style="background:var(--brand)"></i>Keyboard</span><span><i style="background:var(--blue)"></i>Mouse</span></div></div><div id="c-act"></div></div>
+ <div class="card"><div class="ch"><div><h3>Sitting vs standing</h3><p>Minutes per hour</p></div><div class="legend"><span><i style="background:#8C9CB1"></i>Sitting</span><span><i style="background:var(--good)"></i>Standing</span></div></div><div id="c-sit"></div></div>
+ <div class="card"><div class="ch"><div><h3>Work session length</h3><p>${P==='today'?'Today':'Typical day'} · dashed line marks a 60-minute guideline</p></div></div><div id="c-sess"></div></div>
+ <div class="card"><div class="ch"><div><h3>Active vs inactive</h3><p>Share of the working day</p></div></div>
+  ${[['Active (typing / mouse)',72,'var(--brand)'],['Idle at desk',18,'var(--blue)'],['Away from desk',10,'var(--ink-3)']].map(r=>`<div class="hbar"><span>${r[0]}</span><div class="bar"><i style="width:${r[1]}%;background:${r[2]}"></i></div><b>${r[1]}%</b></div>`).join('')}
+  <div class="ch" style="margin:20px 0 10px"><div><h3 style="font-size:14px">Activity mix</h3></div></div>
+  ${[['Coding',48],['Documentation',18],['Meetings',16],['Communication',10],['Code review',8]].map(r=>`<div class="hbar"><span>${r[0]}</span><div class="bar"><i style="width:${r[1]}%;background:var(--blue)"></i></div><b>${r[1]}%</b></div>`).join('')}</div></div>
+ <div class="card" style="margin-top:16px"><div class="ch"><div><h3>Sessions and breaks</h3><p>Filled blocks are work sessions; gaps are breaks</p></div><span class="chip good">Break compliance ${h.brk}</span></div>
+  <div style="position:relative;height:46px;background:var(--surface-2);border-radius:10px;overflow:hidden">${SESS.map(s=>{const l=(s[0]-480)/570*100,w=s[1]/570*100,c=s[1]>60?'var(--warn)':'var(--brand)';return `<div title="${fmtT(s[0])} · ${s[1]} min" style="position:absolute;left:${l}%;width:${w}%;top:6px;bottom:6px;border-radius:7px;background:${c};opacity:.9"></div>`}).join('')}<div style="position:absolute;left:${240/570*100}%;width:${60/570*100}%;top:0;bottom:0;background:repeating-linear-gradient(45deg,transparent 0 6px,var(--line) 6px 8px)"></div></div>
+  <div style="display:flex;justify-content:space-between;color:var(--ink-3);font-size:12px;margin-top:6px">${[8,10,12,14,16,17].map(x=>`<span>${hLab(x)}</span>`).join('')}</div>
+  <p class="tiny muted" style="margin-top:10px">Amber sessions ran past 60 minutes. Hatched area is lunch.</p></div>`}
+function mtHabits(){const P=S.period,we=P==='yesterday',sc=a=>we?a.map((v,i)=>i>=2&&i<=4?Math.round(v*.8):0):a.map(v=>Math.round(v*(P==='today'?1:.94)));
+ barChart($('#c-act'),{labels:HOURS.map(x=>hLab(x).replace(' ','')),series:[{name:'Keyboard',color:'#0A7C86',data:sc(HKB)},{name:'Mouse',color:'#2E6BD8',data:sc(HMS)}],h:230,max:100});
+ const pr=sc(HPRES),st=sc(HSTAND).map((v,i)=>Math.min(v,pr[i]));barChart($('#c-sit'),{labels:HOURS.map(x=>hLab(x).replace(' ','')),stacked:1,series:[{name:'Sitting',color:'#8C9CB1',data:pr.map((v,i)=>v-st[i])},{name:'Standing',color:'#12946A',data:st}],h:230,max:60,unit:''});
+ barChart($('#c-sess'),{labels:SESS.map(s=>fmtT(s[0])),series:[{name:'Minutes',color:'#0A7C86',colors:SESS.map(s=>s[1]>60?'#D68F12':'#0A7C86'),data:SESS.map(s=>s[1])}],h:230,max:90,refs:[{v:60,label:'60 min',color:'#C97A06'}]})}
+
+/* ================= recommendations ================= */
+const RECS=[
+{id:'mon',p:'high',t:'Adjust monitor height',why:'Repeated forward-head deviation detected.',ev:'17 events today · 96 this week',ben:'Reduce prolonged neck flexion exposure.',act:'Raise monitor by approximately 3–5 cm.',obs:'Forward head posture occurred 17 times today, mostly between 2:00 PM and 4:30 PM.',mat:'Most events occurred during coding sessions when visual attention was concentrated on the lower portion of the screen.',do:'Adjust monitor height and viewing position; keep the top of the screen near eye level.',exp:'Potential reduction in repeated forward-head exposure.',conf:'High',cp:91},
+{id:'brk',p:'med',t:'Introduce micro-breaks',why:'Your average uninterrupted session this week is 58 minutes.',ev:'3 sessions past 60 minutes today',ben:'Shorter stretches of static sitting.',act:'Take a 2–3 minute movement break after extended work periods.',obs:'Uninterrupted sessions average 58 minutes, and 3 exceeded 60 minutes today (longest 74).',mat:'Your deepest focus blocks coincide with the longest static periods, so a reminder every 30 minutes would interrupt the wrong moments.',do:'Use adaptive micro-breaks: ErgoSense times them at natural task boundaries.',exp:'Shorter static periods and a lower cumulative risk load.',conf:'High',cp:88},
+{id:'wr',p:'med',t:'Review keyboard height and wrist position',why:'Wrist deviation appears during high-intensity typing.',ev:'11 events today',ben:'Less time with wrists angled away from neutral.',act:'Lower the keyboard slightly and move it a little closer.',obs:'Wrist deviation events cluster in 9–11 AM and 2–4 PM typing bursts.',mat:'Keyboard height and distance change the angle at which wrists bear load.',do:'Keep wrists roughly in line with forearms and avoid resting them on the desk edge.',exp:'Fewer wrist deviation events per typing hour.',conf:'Moderate',cp:79},
+{id:'slump',p:'med',t:'Add a movement break around 2:45 PM',why:'Risk rises 24% between 2 PM and 4 PM.',ev:'Seen on 5 of the last 7 workdays',ben:'Flatten the afternoon rise in risk.',act:'Schedule a 3-minute movement break at about 2:45 PM.',obs:'Afternoon risk climbs on most workdays and is highest after long coding blocks.',mat:'The slump follows the longest uninterrupted stretch of the day.',do:'Stand, walk or change tasks briefly before the peak.',exp:'A lower afternoon peak in your risk timeline.',conf:'Moderate',cp:76},
+{id:'std',p:'low',t:'Alternate sitting and standing',why:'Your standing exposure is below your personal weekly baseline.',ev:'1h 12m today vs 18% baseline share',ben:'More varied working positions.',act:'Introduce short standing intervals during low-focus tasks.',obs:'Standing time is 1h 12m, under the 18% share typical for you.',mat:'Position variety reduces how long any single posture is held.',do:'Stand during calls, reading or review blocks.',exp:'More position changes per day.',conf:'Moderate',cp:72}];
+const PL={high:['High priority','high'],med:['Medium priority','med'],low:['Low priority','low']};
+function recsHTML(){const list=RECS.filter(r=>S.rp==='all'||r.p===S.rp);
+ if(!list.length)return emptyState('check','No significant ergonomic risk detected','Nothing in this priority right now.','good');
+ return ['high','med','low'].map(p=>{const g=list.filter(r=>r.p===p);if(!g.length)return'';return `<div class="sec" style="margin-top:22px"><h2>${PL[p][0].replace(' priority','')} priority</h2></div>`+g.map(r=>{const d=S.recs[r.id];const lo=LOADFIX.find(x=>x.id===r.id);
+ return `<article class="card rec ${d?'done':''}"><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><span class="prio ${PL[p][1]}">${PL[p][0]}</span><h3 style="font-size:18px">${r.t}</h3>${d?'<span class="chip good">✓ Addressed</span>':''}<span class="chip brand" style="margin-left:auto">Projected load −${lo?lo.d:0} pts</span></div>
+ <div class="meta"><div><small>Why</small>${r.why}</div><div><small>Evidence</small>${r.ev}</div><div><small>Expected benefit</small>${r.ben}</div><div><small>Action</small><b>${r.act}</b></div></div>
+ <details class="fx"><summary><div class="fx-ico" style="background:var(--blue-soft);color:var(--blue)">${ico('spark')}</div><b>Explain this recommendation</b><span class="chev">${ico('chev')}</span></summary><div class="body"><div class="xai"><div><b>What we observed</b>${r.obs}</div><div><b>Why it matters</b>${r.mat}</div><div><b>What you can do</b>${r.do}</div><div><b>Expected improvement</b>${r.exp}</div><div><b>Confidence</b>${r.conf} (${r.cp}%)<div class="bar" style="margin-top:8px"><i style="width:${r.cp}%;background:var(--brand)"></i></div></div></div><p class="tiny muted" style="margin-top:10px">General ergonomic guidance. Not a medical assessment or treatment.</p></div></details>
+ <div><button class="btn ${d?'':'pri'} sm" data-act="rec" data-v="${r.id}">${d?'Undo':'Mark as addressed'}</button></div></article>`}).join('')}).join('')}
+function recSummary(){const n=Object.values(S.recs).filter(Boolean).length,pct=n/RECS.length*100;return `<div class="card" style="display:flex;gap:22px;align-items:center;flex-wrap:wrap"><div style="flex:1;min-width:220px"><h3>${n} of ${RECS.length} addressed</h3><div class="bar prog" style="margin:10px 0"><i style="width:${pct}%;background:var(--good)"></i></div><p class="muted tiny">Each completed action lowers your projected cumulative risk load.</p></div><div class="metric" style="min-width:180px"><small>Projected risk load</small><b>${LOAD.today} → ${Math.round(loadVal()||LOAD.today)}</b></div></div>`}
+function pgRecs(){const P=S.period==='aug'?'today':S.period;
+ return head('Personalized recommendations','Ranked by how much each change is likely to reduce your exposure. Every one comes with its reasoning.',`<div class="seg">${[['all','All'],['high','High'],['med','Medium'],['low','Low']].map(x=>`<button class="${S.rp===x[0]?'on':''}" data-act="rp" data-v="${x[0]}">${x[1]}</button>`).join('')}</div>`)+`<div id="recsum">${recSummary()}</div><div id="recs">${recsHTML()}</div>`}
+
+/* ================= weekly plan ================= */
+
+/* ================= movement & recovery ================= */
+const MOVES=[
+ {id:'chin',title:'Chin tuck',time:'45 sec',focus:'Forward-head pattern',why:'Your afternoon data shows repeated head-forward deviation.',level:'Gentle',desc:'Draw the chin back slightly without looking down. Hold briefly, then release.',kind:'chin'},
+ {id:'thoracic',title:'Thoracic extension',time:'45 sec',focus:'Upper-back mobility',why:'Useful after long coding blocks with a rounded upper back.',level:'Gentle',desc:'Sit tall, place hands behind your head and gently open the upper back.',kind:'thoracic'},
+ {id:'wrist',title:'Wrist mobility',time:'30 sec',focus:'Typing recovery',why:'Wrist deviation increased during high-intensity typing periods this week.',level:'Gentle',desc:'Slowly circle each wrist, then open and close the hands without forcing range.',kind:'wrist'},
+ {id:'reset',title:'Stand + walk reset',time:'2 min',focus:'Static sitting',why:'Your longest uninterrupted session today reached 86 minutes.',level:'Low effort',desc:'Stand, walk briefly, change visual distance, then return when ready.',kind:'walk'}
+];
+function moveFigure(kind){
+ const base=(x,tilt=0)=>`<circle class="head" cx="${x}" cy="42" r="14"/><path class="stick" d="M${x} 56L${x} 99M${x} 68L${x-25} 84M${x} 68L${x+25} 84M${x} 99L${x-22} 139M${x} 99L${x+22} 139"/>`;
+ if(kind==='chin')return `<svg class="move-svg" viewBox="0 0 250 180" aria-label="Animated stick figure demonstrating a chin tuck">
+   <path class="guide" d="M18 145H232"/><path class="divider" d="M125 20V157"/>
+   <g class="pose-a">${base(72)}</g>
+   <g class="pose-b">${base(178)}<path class="arrow" d="M198 34q-9 8-18 3"/><path class="arrow" d="M181 37l-2-7m2 7 8 1"/></g>
+   <path class="guide" d="M54 150H92M160 150H196"/>
+ </svg>`;
+ if(kind==='thoracic')return `<svg class="move-svg" viewBox="0 0 250 180" aria-label="Animated stick figure demonstrating thoracic extension">
+   <path class="guide" d="M18 145H232"/><path class="divider" d="M125 20V157"/>
+   <g class="pose-a">${base(72)}<path class="stick" d="M47 84L40 68M97 84L104 68"/></g>
+   <g class="pose-b">${base(178)}<path class="stick" d="M153 82L148 60M203 82L208 60"/><path class="arrow" d="M151 53q27-19 54 0"/></g>
+   <path class="guide" d="M54 150H90M160 150H196"/>
+ </svg>`;
+ if(kind==='wrist')return `<svg class="move-svg" viewBox="0 0 250 180" aria-label="Animated stick figure demonstrating wrist mobility">
+   <path class="guide" d="M18 145H232"/><path class="divider" d="M125 20V157"/>
+   <g class="pose-a">${base(72)}<g class="wrist-a"><path class="stick" d="M47 84q-13 8-16 21"/></g></g>
+   <g class="pose-b">${base(178)}<g class="wrist-b"><path class="stick" d="M203 84q13 8 16 21"/></g></g>
+   <path class="arrow" d="M37 102q-7 10 2 17"/><path class="arrow" d="M213 102q7 10-2 17"/>
+   <path class="guide" d="M54 150H90M160 150H196"/>
+ </svg>`;
+ return `<svg class="move-svg" viewBox="0 0 250 180" aria-label="Animated stick figure demonstrating a stand and walk reset">
+   <path class="guide" d="M18 145H232"/><path class="divider" d="M125 20V157"/>
+   <g class="pose-a">${base(72)}</g>
+   <g class="walk-b">${base(178)}<path class="stick" d="M178 99L151 138M178 99L205 130"/></g>
+   <path class="arrow" d="M100 92H145"/><path class="arrow" d="M138 85l8 7-8 7"/>
+   <path class="guide" d="M54 150H90M160 150H196"/>
+ </svg>`;
+}
+function moveCard(m){
+ const done=S.moves[m.id];
+ return `<div class="card move-card ${done?'rec done':''}"><div class="move-figure">${moveFigure(m.kind)}</div><div><div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><h3>${m.title}</h3><span class="chip brand">${m.time}</span></div><p class="muted" style="margin-top:4px">${m.desc}</p></div><div class="tags"><span class="chip blue">${m.focus}</span><span class="chip">${m.level}</span></div><div class="detail" style="margin-top:0"><b>Why you're seeing this</b><p style="margin-top:4px;color:var(--ink-2)">${m.why}</p></div><button class="btn ${done?'':'pri'}" data-act="moveDone" data-v="${m.id}">${done?ico('check')+'Completed':'Mark completed'}</button></div>`;
+}
+function routineModal(){
+ const step=S.routine.step,secs=S.routine.sec,cur=MOVES[step%3],left=120-secs;
+ return `<div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start"><div><span class="ai-tag">${ico('spark')}Adaptive 2-minute reset</span><h2 style="font-size:24px;margin-top:5px">${cur.title}</h2><p class="muted">Step ${step+1} of 3 · ${Math.max(0,30-(secs%30))} sec remaining</p></div><span class="chip brand">${fmtS(Math.max(0,left))}</span></div><div class="move-figure" style="height:250px;margin-top:16px">${moveFigure(cur.kind)}</div><div class="bar" style="margin-top:14px"><i style="width:${Math.min(100,secs/120*100)}%;background:var(--brand)"></i></div><p style="color:var(--ink-2);margin-top:12px">Move slowly and stay within a comfortable range. Stop if anything feels uncomfortable.</p><div style="display:flex;justify-content:flex-end;gap:8px;margin-top:14px"><button class="btn" data-act="closeRoutine">Exit</button></div></div>`;
+}
+function pgMovement(){
+ const done=Object.values(S.moves).filter(Boolean).length;
+ return head('Movement & Recovery','Short, adaptive mobility guidance based on the ergonomic patterns the system observed. General wellness guidance — not medical treatment.',`<button class="btn pri" data-act="startRoutine">${ico('play')}Start 2-minute reset</button>`)+
+ `<div class="card" style="margin-bottom:16px;border-color:var(--brand)"><div class="grid g-21" style="align-items:center"><div><span class="ai-tag">${ico('spark')}Today's adaptive focus</span><h2 style="font-size:22px;margin:5px 0">Break the afternoon static block</h2><p style="color:var(--ink-2)">Your current pattern combines forward-head exposure, wrist deviation and an 86-minute uninterrupted session. The system suggests a short reset before the next deep-work block.</p><div class="tags" style="margin-top:10px"><span class="chip warn">Current risk: Moderate</span><span class="chip">Next break: in 6 min</span><span class="chip blue">Confidence: moderate</span></div></div><div class="card soft"><small class="muted">Routine completion</small><div class="num" style="font-size:30px;font-weight:800;margin-top:4px">${done}/4</div><div class="bar" style="margin-top:8px"><i style="width:${done/4*100}%;background:var(--brand)"></i></div><small class="muted">This week's suggested movement cards</small></div></div></div>
+ <div class="sec"><h2>Suggested mobility</h2><p>Choose what fits your current work block</p></div><div class="movement-grid">${MOVES.map(moveCard).join('')}</div>
+ <div class="sec"><h2>Adaptive logic</h2><p>The routine changes with observed patterns</p></div><div class="grid g3"><div class="card"><span class="chip blue">Forward head</span><h3 style="margin:9px 0 5px">Neck + upper-back reset</h3><p class="muted">Chin tuck followed by thoracic extension.</p></div><div class="card"><span class="chip warn">Wrist deviation</span><h3 style="margin:9px 0 5px">Forearm reset</h3><p class="muted">Short wrist mobility after typing bursts, without forcing range.</p></div><div class="card"><span class="chip good">Static sitting</span><h3 style="margin:9px 0 5px">Position change</h3><p class="muted">Stand or walk briefly instead of adding another posture alert.</p></div></div>
+ <div class="card soft" style="margin-top:16px"><b>Safety note:</b> These are general ergonomic movement suggestions generated from simulated workstation data. They are not individualized medical exercises. Stop if uncomfortable and consult a qualified professional for personalized advice.</div>`;
+}
+const PLAN=[
+['Monday','Monitor alignment','2-minute mobility preparation','Check monitor height (raise ≈ 4 cm)','Movement after prolonged static work','Review posture trend'],
+['Tuesday','Movement frequency','Set a 45-minute movement cue','Stand for one call or review block','2–3 minute walk every 45–50 minutes','Check break compliance'],
+['Wednesday','Keyboard and wrist setup','Wrist and forearm mobility, 2 minutes','Adjust keyboard height and distance','Shake out hands after typing bursts','Compare wrist events with Tuesday'],
+['Thursday','Sitting and standing variation','Start the first block standing','Alternate positions every 40–60 minutes','Walk during a call','Log standing time vs your baseline'],
+['Friday','End-of-day fatigue management','Plan a mid-afternoon movement slot','Micro-break at about 2:45 PM','Longer 5-minute reset before the final block','Weekly wrap-up: note what helped'],
+['Saturday','Weekly recovery (optional)','Light walk or any activity you enjoy','No monitoring needed','Rest and step away from screens','Optional: skim your report'],
+['Sunday','Weekly review','Read the weekly report','Pick two focus areas for next week','Plan your break windows','Share with your care team (optional)']];
+const SLOT=['Morning','Work','Break','Evening'];
+function planHTML(){let done=0,tot=0;const cards=PLAN.map((d,i)=>{const today=i===0;return `<div class="card day ${today?'today':''}"><div style="display:flex;justify-content:space-between;align-items:center"><h3>${d[0]}</h3>${today?'<span class="chip brand">Today</span>':''}</div><div><small class="muted">Focus</small><div class="b" style="font-size:15px">${d[1]}</div></div><div>${SLOT.map((s,j)=>{const id=i+'-'+j,on=S.plan[id];tot++;if(on)done++;return `<button class="task ${on?'on':''}" data-act="task" data-v="${id}"><span class="cb">${on?ico('check'):''}</span><span style="flex:1"><small>${s}</small>${d[j+2]}</span></button>`}).join('')}</div></div>`}).join('');
+ return `<div class="card" style="display:flex;gap:20px;align-items:center;flex-wrap:wrap;margin-bottom:16px"><div style="flex:1;min-width:220px"><h3>Week progress: ${done} of ${tot} steps</h3><div class="bar prog" style="margin:10px 0 6px"><i style="width:${done/tot*100}%;background:var(--brand)"></i></div><p class="tiny muted">Built from your last 4 weeks: monitor alignment first because it has the biggest effect on your risk load.</p></div><span class="chip blue">${ico('spark')}Personalized for Alex</span></div><div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(250px,1fr))">${cards}</div>`}
+function pgWeekly(){return head('Your weekly ergonomic routine','A Monday–Sunday plan that focuses on one change per day. Ergonomic wellness guidance, not medical treatment.',`<button class="btn" data-act="regen">${ico('refresh')}Regenerate plan</button>`)+`<div id="plan">${planHTML()}</div>`}
+
+/* ================= reports ================= */
+function repPreview(){const kp=KPIS.week,d=dist('week');
+ return `<div class="paper"><p class="tiny muted">ErgoSense · Ergonomic wellness report</p><h2>Weekly Ergonomic Assessment</h2><p>User: <b>Alex Morgan</b> · Period: <b>September 21–27, 2026</b></p>
+ <h4>1. Executive summary</h4><p>Alex's ergonomic risk index is 68/100. Forward-head exposure has improved from earlier weeks, but afternoon posture, wrist deviation and long static sessions remain recurring patterns.</p>
+ <h4>2. Ergonomic Risk Index</h4><p style="font:800 30px var(--f-head);color:var(--ink)">68 <small style="font-size:14px;color:var(--ink-3)">/ 100</small></p>
+ <h4>3. Posture analysis</h4><div class="bar" style="height:12px">${['neutral','forward_head','slouched'].map(k=>`<i style="width:${d[k]}%;background:${CATS[k].col}"></i>`).join('')}<i style="width:${100-d.neutral-d.forward_head-d.slouched}%;background:var(--ink-3)"></i></div><p class="tiny muted" style="margin-top:6px">Neutral ${d.neutral}% · Forward head ${d.forward_head}% · Slouched ${d.slouched}% · Other ${100-d.neutral-d.forward_head-d.slouched}%</p>
+ <h4>4. Risk timeline</h4><div id="rp-rc"></div>
+ <h4>5. Work habits</h4><table><tr><th>Metric</th><th>This week</th><th>Last week</th></tr><tr><td>Screen time / day</td><td>6h 04m</td><td>6h 21m</td></tr><tr><td>Longest session</td><td>86 min</td><td>94 min</td></tr><tr><td>Standing / day</td><td>0h 49m</td><td>0h 41m</td></tr></table>
+ <h4>6. Major risk patterns</h4><ul><li>Afternoon slump: risk +21% between 2 PM and 4 PM.</li><li>Deep-work pattern: average uninterrupted session 54 minutes.</li><li>End-of-day fatigue: deviation increases after 4 PM.</li></ul>
+ <h4>7. Recommendations</h4><ul>${RECS.slice(0,3).map(r=>`<li><b>${r.t}.</b> ${r.act}</li>`).join('')}</ul>
+ <h4>8. Weekly routine</h4><p>Mon monitor alignment · Tue movement frequency · Wed keyboard and wrist · Thu sit/stand variation · Fri end-of-day fatigue · Sat recovery · Sun review. Movement & Recovery completions are included in the weekly summary.</p>
+ <h4>9. Progress compared with previous week</h4><table><tr><th>Metric</th><th>Last week</th><th>This week</th></tr><tr><td>Ergonomic Risk Index</td><td>71</td><td>68</td></tr><tr><td>Forward-head exposure</td><td>1h 22m</td><td>1h 02m</td></tr><tr><td>Break compliance</td><td>56%</td><td>64%</td></tr></table>
+ <p class="tiny muted" style="margin-top:22px">ErgoSense is a prototype ergonomic wellness platform. It does not diagnose, treat, cure or prevent any medical condition.</p></div>`}
+function repStatus(){const st=S.rep;
+ if(st==='idle')return `<button class="btn pri" style="width:100%" data-act="genRep">${ico('reports')}Generate report</button>`;
+ if(st==='done')return `<div class="banner" style="background:var(--good-soft);border-color:transparent"><span style="color:var(--good)">${ico('check')}</span><div><b>Report generated successfully.</b><br><span class="muted">Weekly Ergonomic Assessment · Sep 21–27, 2026</span></div></div><div style="display:grid;gap:8px"><button class="btn dark" data-act="exportPdf">${ico('download')}Export PDF</button><button class="btn" data-act="genRep">Generate again</button></div>`;
+ const steps=['Collecting sensor data','Estimating risk patterns','Comparing with your baseline','Composing recommendations'];
+ return `<div style="display:grid;gap:12px"><b style="display:flex;gap:10px;align-items:center"><span class="spin"></span>Report generation in progress…</b><div class="bar prog"><i style="width:${(st+1)/steps.length*100}%;background:var(--brand)"></i></div>${steps.map((s,i)=>`<div class="tiny" style="color:${i<=st?'var(--ink)':'var(--ink-3)'}">${i<st?'✓':i===st?'…':'○'} ${s}</div>`).join('')}</div>`}
+function pgReports(){return head('Reports','Generate a clear progress report whenever you need one, for yourself or to share with your care team.')+
+ `<div class="grid" style="grid-template-columns:minmax(0,1fr) 340px;align-items:start" id="repgrid"><div>${repPreview()}</div>
+ <div style="display:grid;gap:16px;position:sticky;top:80px"><div class="card"><h3 style="margin-bottom:12px">Report options</h3><label class="tiny muted">Period</label><select class="inp" style="width:100%;margin:4px 0 12px"><option>Sep 21–27, 2026 (last week)</option><option>Last 30 days</option><option>Custom range…</option></select>
+ <div class="row" style="padding:8px 0"><span>Include risk timeline</span><span class="tgl on"></span></div><div class="row" style="padding:8px 0"><span>Include recommendations</span><span class="tgl on"></span></div><div class="row" style="padding:8px 0"><span>Share with physiotherapist</span><button class="tgl ${S.care.scope.reports?'on':''}" data-act="repShare" aria-label="Share report"></button></div>
+ <div id="repst" style="margin-top:14px">${repStatus()}</div></div>
+ <div class="card"><h3 style="margin-bottom:10px">Previous reports</h3><div id="rephist">${S.repHist.map(r=>`<div class="row" style="padding:9px 0"><div><b style="font-size:13px">${r.t}</b><p>${r.p}</p></div><span class="chip">${r.d}</span></div>`).join('')}</div></div></div></div>`}
+function mtReports(){const el=$('#rp-rc');if(el)riskChart(el,{series:pSeries('week'),range:true,h:190})}
+function stepRep(i){S.rep=i;repaint('#repst',repStatus());if(i<3)S.repT=setTimeout(()=>stepRep(i+1),850);else S.repT=setTimeout(()=>{S.rep='done';repaint('#repst',repStatus());S.repHist.unshift({t:'Weekly Ergonomic Assessment',p:'Sep 21–27, 2026',d:'Just now'});repaint('#rephist',S.repHist.map(r=>`<div class="row" style="padding:9px 0"><div><b style="font-size:13px">${r.t}</b><p>${r.p}</p></div><span class="chip">${r.d}</span></div>`).join(''));toast('Report generated successfully.')},850)}
+
+/* ================= workstation ================= */
+const WSC={monitor:{n:'Monitor',pos:[86,38],st:()=>S.wsApplied?['good','✓ Position appears appropriate','Screen top now near eye level (≈ 112 cm).']:['warn','◐ Near optimal, minor adjustment suggested','Screen sits about 4 cm below eye level (108 cm). Raising it can reduce repeated forward-head posture.']},
+ desk:{n:'Desk',pos:[95,60],st:()=>['good','✓ Height within personalized range','72 cm, matches your typical elbow height.']},
+ keyboard:{n:'Keyboard',pos:[68,54],st:()=>S.wsApplied?['good','✓ Wrist position appears appropriate','Moved ≈ 3 cm closer.']:['warn','⚠ Wrist position requires attention','Wrist deviation events cluster during long typing bursts. A slightly lower, closer keyboard helps.']},
+ chair:{n:'Chair',pos:[26,60],st:()=>['good','✓ Current configuration','Seat height 46 cm with lumbar support engaged.']},
+ user:{n:'User',pos:[36,25],st:()=>S.wsApplied?['good','✓ Neck angle ≈ 14° (simulated)','Projected from the recommended setup.']:['blue','Neck angle ≈ 18° typical','Within your baseline of 22° ±6°.']}};
+function wsHTML(){const sel=S.wsSel,c=WSC[sel],[t,l,x]=c.st();
+ return `<div class="grid g-21" style="align-items:start"><div class="card"><div class="ch"><div><h3>Your workstation</h3><p>Select a component</p></div><button class="btn sm ${S.wsApplied?'pri':''}" data-act="wsApply">${S.wsApplied?'✓ Recommended setup applied':'Preview recommended setup'}</button></div>
+ <div class="pos-rel" style="max-width:640px;margin:0 auto">${figureSVG('ws-fig')}${Object.entries(WSC).map(([k,v])=>{const s=v.st()[0];return `<button class="pin ${s==='blue'?'good':s} ${sel===k?'on':''}" style="left:${v.pos[0]}%;top:${v.pos[1]}%" data-act="wsSel" data-v="${k}" aria-label="${v.n}">${s==='good'?ico('check'):s==='warn'?'!':'i'}</button>`}).join('')}</div>
+ <div class="detail"><b>${c.n}</b><p style="margin:4px 0 2px"><span class="chip ${t}">${l}</span></p><p style="color:var(--ink-2);margin-top:6px">${x}</p></div></div>
+ <div style="display:grid;gap:16px"><div class="card"><div class="ch"><div><h3>Component status</h3></div></div>${Object.entries(WSC).map(([k,v])=>{const [t,l]=v.st();return `<div class="row" style="padding:10px 0"><b>${v.n}</b><span class="chip ${t}" style="white-space:normal;text-align:right">${l}</span></div>`}).join('')}</div>
+ <div class="card"><div class="ch"><div><h3>Recommended setup</h3><p>Personalized to your body and habits</p></div></div><div class="row" style="padding:10px 0"><div><b>Monitor</b><p>Raise approximately 4 cm</p></div><span class="chip ${S.wsApplied?'good':'warn'}">${S.wsApplied?'112 cm':'108 → 112 cm'}</span></div><div class="row" style="padding:10px 0"><div><b>Keyboard</b><p>Move slightly closer</p></div><span class="chip ${S.wsApplied?'good':'warn'}">${S.wsApplied?'Done':'≈ 3 cm'}</span></div><div class="row" style="padding:10px 0"><div><b>Desk</b><p>Current height appropriate</p></div><span class="chip good">72 cm</span></div></div></div></div>`}
+function pgWs(){return head('Workstation','How your chair, desk, monitor and keyboard contribute to your posture.')+`<div id="wsw">${wsHTML()}</div>`}
+function mtWs(){setFigure('ws-fig',S.wsApplied?{neck:9,torso:3,raise:1,color:'var(--good)'}:{neck:14,torso:6,raise:0,color:'var(--brand)'})}
+
+/* ================= progress ================= */
+const PROG={weekly:{lab:['Week 1','Week 2','Week 3','Week 4'],score:[74,71,69,68],fwd:[130,108,91,71],stat:[91,86,82,78],brk:[56,61,62,64]},monthly:{lab:['Jun','Jul','Aug','Sep'],score:[66,72,70,68],fwd:[156,124,96,71],stat:[112,101,89,78],brk:[49,57,61,64]}};
+function dailyOf(a){const r=rng(a[0]*13+a[3]),pos=[3.5,10.5,17.5,24.5];return Array.from({length:28},(_,i)=>{let v;if(i<=pos[0])v=a[0]+(a[1]-a[0])*(i-pos[0])/7;else if(i>=pos[3])v=a[3];else{const k=pos.findIndex(p=>p>i)-1;v=a[k]+(a[k+1]-a[k])*(i-pos[k])/7}return Math.round(v+(r()-.5)*Math.abs(a[3]-a[0])*.12)}).map((v,i,ar)=>i===27?a[3]:v)}
+function pgProgress(){const v=S.prog,src=v==='daily'?PROG.weekly:PROG[v];const D=k=>v==='daily'?dailyOf(PROG.weekly[k]):PROG[v][k];
+ const tiles=[['Ergonomic score','score',x=>x,'up'],['Forward-head exposure','fwd',fmtH,'down'],['Longest static session','stat',x=>x+'m','down'],['Break compliance','brk',x=>x+'%','up']];
+ return head('Progress','How your ergonomic behaviour has changed over time.',`<div class="seg">${['daily','weekly','monthly'].map(x=>`<button class="${v===x?'on':''}" data-act="prog" data-v="${x}">${x[0].toUpperCase()+x.slice(1)}</button>`).join('')}</div>`)+
+ `<div class="grid g4">${tiles.map(t=>{const a=PROG[v==='daily'?'weekly':v][t[1]];return `<div class="card" style="padding:16px"><small class="muted">${t[0]}</small><div class="num" style="font-size:22px;font-weight:800;margin:4px 0">${t[2](a[0])} → ${t[2](a[3])}</div><span class="chip good">${t[3]==='up'?'▲':'▼'} improving</span></div>`}).join('')}</div>
+ <div class="grid g2" style="margin-top:16px">${tiles.map(t=>`<div class="card"><div class="ch"><div><h3>${t[0]}</h3><p>${t[3]==='up'?'Higher is better':'Lower is better'}</p></div></div><div id="pg-${t[1]}"></div></div>`).join('')}</div>
+ <div class="grid g3" style="margin-top:16px"><div class="card"><h3 style="margin-bottom:10px">Biggest improvements</h3>${['Reduced prolonged sitting','Improved monitor alignment','More frequent movement'].map(x=>`<div class="row" style="padding:9px 0;justify-content:flex-start"><span class="chip good">✓</span><b>${x}</b></div>`).join('')}</div>
+ <div class="card"><h3 style="margin-bottom:10px">Still improving</h3>${['Wrist positioning','Afternoon posture'].map(x=>`<div class="row" style="padding:9px 0;justify-content:flex-start"><span class="chip warn">→</span><b>${x}</b></div>`).join('')}</div>
+ <div class="card"><h3 style="margin-bottom:10px">Milestones</h3>${[['Sep 1','Monitoring started'],['Sep 15','Personal baseline established'],['Sep 24','Monitor raised 4 cm; forward-head events −18%'],['Sep 26','First week with no session over 80 min']].map(m=>`<div class="row" style="padding:8px 0;justify-content:flex-start;align-items:flex-start"><span class="chip">${m[0]}</span><span>${m[1]}</span></div>`).join('')}</div></div>
+ <p class="tiny muted" style="margin-top:12px">Sample trend data for the prototype.</p>`}
+function mtProgress(){const v=S.prog,lab=v==='daily'?Array.from({length:28},(_,i)=>'Sep '+(i+1)):PROG[v==='daily'?'weekly':v].lab,D=k=>v==='daily'?dailyOf(PROG.weekly[k]):PROG[v][k];
+ lineChart($('#pg-score'),{labels:lab,series:[{name:'Score',color:'#0A7C86',data:D('score'),area:1}],h:210,min:50,max:90});
+ lineChart($('#pg-fwd'),{labels:lab,series:[{name:'Forward head',color:'#2E6BD8',data:D('fwd'),area:1}],h:210,min:0,fmt:x=>fmtH(Math.round(x))});
+ lineChart($('#pg-stat'),{labels:lab,series:[{name:'Longest static',color:'#C97A06',data:D('stat'),area:1}],h:210,min:40,unit:' min'});
+ lineChart($('#pg-brk'),{labels:lab,series:[{name:'Compliance',color:'#12946A',data:D('brk'),area:1}],h:210,min:40,max:100,unit:'%'})}
+/* ================= adaptive engine ================= */
+const FLOW=[['Posture detected','Pose estimation flags a deviation'],['Duration check','How long has it been held?'],['Task context','Deep focus, meeting or low-focus work?'],['Personal baseline','Compared with your normal, not a generic ideal'],['Risk estimation','Exposure and repetition combined'],['Intervention decision','Pick the least disruptive helpful action']];
+const LEVELS=[['No intervention','Nothing to do. Keep working.'],['Passive dashboard update','Logged quietly for your review.'],['Subtle visual notification','A small on-screen cue, no sound.'],['Haptic / gentle reminder','A soft wearable nudge.'],['Workstation adjustment','A suggested change to desk, monitor or keyboard.']];
+function simCalc(){const s=S.sim,deep=s.ctx==='deep',mtg=s.ctx==='meeting';const risk=Math.round(clamp(s.dev/25*55+s.dur/90*45,0,100));const t=[15,35+(deep?10:0),60+(deep?10:0)];let L=risk<t[0]?0:risk<t[1]?1:risk<t[2]?2:3;let why='';
+ if(mtg&&L===2){L=1;why='You are in a meeting, so on-screen cues are held back.'}
+ if(deep&&L>=1&&risk<t[2])why='Deep focus detected, so ErgoSense chooses the quieter option.';
+ if(s.rec&&risk>=45){L=4;why='The same pattern repeats on several days, so the workstation is the likely cause. A setup change is suggested.'}
+ if(!why)why=L===0?'Within your normal range. No action needed.':L===1?'Mild and short. Recorded for your weekly review.':L===2?'Sustained enough to deserve a small cue.':'Sustained and significant. A gentle reminder is justified.';return{risk,L,why}}
+function simHTML(){const s=S.sim,r=simCalc();return `<div class="grid g2"><div class="card"><div class="ch"><div><h3>Try it</h3><p>Change the situation and watch the decision</p></div></div>
+ <label class="b tiny">Deviation beyond your normal: ${s.dev}°</label><input type="range" min="0" max="25" value="${s.dev}" data-inp="dev"><label class="b tiny" style="display:block;margin-top:14px">Time held: ${s.dur} min</label><input type="range" min="0" max="90" value="${s.dur}" data-inp="dur">
+ <label class="b tiny" style="display:block;margin:14px 0 6px">Task context</label><div class="seg">${[['low','Low-focus task'],['deep','Deep focus'],['meeting','In a meeting']].map(x=>`<button class="${s.ctx===x[0]?'on':''}" data-act="simctx" data-v="${x[0]}">${x[1]}</button>`).join('')}</div>
+ <div class="row" style="margin-top:8px"><span>Same pattern on several days</span><button class="tgl ${s.rec?'on':''}" data-act="simrec" aria-label="Recurring pattern"></button></div>
+ <div class="detail"><div style="display:flex;justify-content:space-between;align-items:center"><b>Estimated risk</b><span class="chip ${r.risk<35?'good':r.risk<65?'warn':'bad'}">${r.risk} / 100</span></div><div class="bar" style="margin:8px 0"><i style="width:${r.risk}%;background:${riskCol(r.risk)}"></i></div><p style="color:var(--ink-2)">${r.why}</p></div></div>
+ <div class="card"><div class="ch"><div><h3>Intervention levels</h3><p>The least disruptive level that still helps</p></div></div><div style="display:grid;gap:10px">${LEVELS.map((l,i)=>`<div class="lvl ${r.L===i?'on':''}"><span class="n">${i}</span><div><b>Level ${i}: ${l[0]}</b><p class="tiny muted">${l[1]}</p></div></div>`).join('')}</div></div></div>`}
+function pgEngine(){return head('Adaptive intervention engine','ErgoSense decides whether to speak, how loudly, and when. Interrupting someone in deep focus has a cost too.')+
+ `<div class="card"><div class="ch"><div><h3>How a decision is made</h3><p>Every detected deviation passes through the same six checks</p></div></div><div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;align-items:stretch">${FLOW.map((f,i)=>`<div style="display:flex;gap:6px;align-items:center"><div class="node" style="cursor:default;flex:1;height:100%"><span class="chip brand" style="margin-bottom:6px">${i+1}</span><br>${f[0]}<small>${f[1]}</small></div>${i<FLOW.length-1?'<span class="arrow">→</span>':''}</div>`).join('')}</div></div>
+ <div class="sec"><h2>Try the decision logic</h2><p>Prototype rules for demonstration</p></div><div id="sim">${simHTML()}</div>
+ <div class="card soft" style="margin-top:16px"><b>Design principle:</b> prefer the least disruptive intervention. Alerts that arrive too often get ignored, so ErgoSense reserves stronger nudges for patterns that persist.</div>`}
+
+/* ================= baseline ================= */
+function pgBaseline(){const est=S.baseline==='established';
+ const cards=[['Typical coding posture','22°','neck angle','Today 18°','−4° vs your normal','good'],['Typical session','47 min','','Today 47 min','On your normal','good'],['Typical standing ratio','18%','of working time','Today 18%','On your normal','good'],['Typical break interval','52 min','','Today 49 min','Slightly more frequent','good']];
+ return head('Your normal','ErgoSense learns how you usually work and judges deviations against that, not against a one-size-fits-all ideal.',`<div class="seg"><button class="${est?'on':''}" data-act="bl" data-v="established">Established</button><button class="${!est?'on':''}" data-act="bl" data-v="learning">Learning</button></div>`)+
+ (est?`<div class="card" style="display:flex;gap:14px;align-items:center;margin-bottom:16px"><span class="fx-ico" style="background:var(--good-soft);color:var(--good)">${ico('check')}</span><div><b>Personal baseline established</b><p class="muted">Built from 14 days of monitoring. It keeps adapting slowly as your habits change.</p></div></div>
+ <div class="grid g4">${cards.map(c=>`<div class="card"><small class="muted">${c[0]}</small><div class="num" style="font-size:30px;font-weight:800;margin:6px 0 0">${c[1]}</div><small class="muted">${c[2]}&nbsp;</small><div style="margin-top:10px;display:flex;justify-content:space-between;gap:6px;flex-wrap:wrap"><span class="tiny">${c[3]}</span><span class="chip ${c[5]}">${c[4]}</span></div></div>`).join('')}</div>
+ <div class="grid g-21" style="margin-top:16px;align-items:start"><div class="card"><div class="ch"><div><h3>Neck angle today vs your normal</h3><p>Shaded band is your normal range (22° ± 6°)</p></div></div><div id="bl-chart"></div></div>
+ <div class="card"><h3 style="margin-bottom:10px">Why it matters</h3><p style="color:var(--ink-2)">Two people can sit comfortably at different angles. A fixed threshold either over-alerts one of them or misses the other.</p><div class="hbar" style="margin-top:14px"><span>Fixed threshold</span><div class="bar"><i style="width:100%;background:var(--warn)"></i></div><b>31</b></div><div class="hbar"><span>Your baseline</span><div class="bar"><i style="width:55%;background:var(--brand)"></i></div><b>17</b></div><p class="tiny muted">Alerts on the same day. Simulated comparison.</p></div></div>`
+ :`<div class="card" style="display:flex;gap:22px;align-items:center;flex-wrap:wrap"><div class="donut"><svg viewBox="0 0 130 130" width="130" height="130"><circle cx="65" cy="65" r="54" fill="none" stroke="var(--surface-2)" stroke-width="12"/><circle cx="65" cy="65" r="54" fill="none" stroke="var(--brand)" stroke-width="12" stroke-linecap="round" stroke-dasharray="${339*9/14} 339" transform="rotate(-90 65 65)"/></svg><div class="mid"><b style="font-size:26px">9/14</b><small>days</small></div></div><div style="flex:1;min-width:240px"><h3>Your baseline is still learning</h3><p class="muted" style="margin:6px 0 12px">ErgoSense needs about two weeks of typical work before it personalizes thresholds. Until then it uses conservative general ranges and won't nudge you often.</p><div class="bar prog"><i style="width:64%;background:var(--brand)"></i></div></div></div>
+ <div class="grid g4" style="margin-top:16px">${cards.map(c=>`<div class="card"><small class="muted">${c[0]}</small><div class="skel" style="height:34px;margin:10px 0"></div><small class="muted">Learning your baseline…</small></div>`).join('')}</div>`)}
+function mtBaseline(){const el=$('#bl-chart');if(!el)return;const lab=HOURS.map(h=>hLab(h).replace(' ',''));lineChart(el,{labels:lab,series:[{name:'Neck angle',color:'#0A7C86',data:[16,17,19,22,14,18,24,27,26,21],area:1}],h:240,min:5,max:40,unit:'°',band:{lo:16,hi:28,label:'Your normal'}})}
+
+/* ================= care team ================= */
+function careHTML(){const c=S.care;return `<div class="grid g-21" style="align-items:start"><div style="display:grid;gap:16px"><div class="card"><div class="ch"><div><h3>Shared with your physiotherapist</h3><p>Only what you choose, and you can stop any time</p></div><button class="tgl ${c.on?'on':''}" data-act="careOn" aria-label="Sharing"></button></div>
+ <div style="display:flex;gap:14px;align-items:center;padding:12px;border-radius:13px;background:var(--surface-2)"><span class="avatar" style="background:var(--brand-soft);color:var(--brand-ink)">RI</span><div style="flex:1"><b>Dr. R. Iyer</b><p class="tiny muted">Physiotherapist · read-only access${c.on?'':' (paused)'}</p></div><span class="chip ${c.on?'good':''}">${c.on?'Active':'Paused'}</span></div>
+ <div style="margin-top:8px;opacity:${c.on?1:.5}">${[['summary','Scores and weekly summary'],['timeline','Risk timeline and events'],['regions','Body-region trends'],['reports','Weekly reports']].map(x=>`<div class="row"><div><b>${x[1]}</b></div><button class="tgl ${c.scope[x[0]]?'on':''}" data-act="careScope" data-v="${x[0]}" aria-label="${x[1]}"></button></div>`).join('')}<div class="row"><div><b>Raw camera video</b><p>Never captured or shared</p></div><span class="tgl lock"></span></div></div>
+ <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap"><button class="btn pri" data-act="clinician">${ico('eye')}Preview clinician view</button><button class="btn" data-act="toast" data-v="Invite link copied (prototype)">${ico('share')}Copy invite link</button></div></div>
+ <div class="card"><div class="ch"><div><h3>Notes from your care team</h3><p>Guidance appears next to your data</p></div></div><div id="notes">${S.note.map(n=>`<div class="reco" style="margin-bottom:8px">${ico('care')}<span><b>${n.by}</b><br>${n.t}</span></div>`).join('')}</div></div></div>
+ <div class="card soft"><h3 style="margin-bottom:8px">How this is meant to be used</h3><p style="color:var(--ink-2)">Sensors track movement and posture. This dashboard turns that into trends your physiotherapist or ergonomist can look at during a visit, so conversations start from data instead of memory.</p><p style="color:var(--ink-2);margin-top:10px">The information describes ergonomic exposure. It is not a diagnosis, and any clinical decisions stay with the professional.</p><div class="row" style="margin-top:6px"><span>Access log</span><span class="muted tiny">Last viewed Sep 25</span></div></div></div>`}
+function pgCare(){return head('Care team','Optionally let your physiotherapist or ergonomist follow your progress.')+`<div id="care">${careHTML()}</div>`}
+function clinicianHTML(){return `<h2 style="font-size:22px;margin-bottom:2px">Clinician view</h2><p class="muted" style="margin-bottom:16px">Read-only preview of what Dr. R. Iyer would see for Alex Morgan.</p>
+ <div class="grid g3" style="gap:10px;margin-bottom:14px"><div class="metric"><small>Ergonomic Risk Index</small><b>68 / 100</b></div><div class="metric"><small>Cumulative risk load</small><b>47</b></div><div class="metric"><small>Break compliance</small><b>64%</b></div></div>
+ <div class="card flat" style="margin-bottom:12px"><h3 style="font-size:14px;margin-bottom:6px">Weekly risk pattern</h3><div id="cl-rc"></div></div>
+ <div class="grid g2" style="gap:12px"><div class="card flat"><h3 style="font-size:14px;margin-bottom:8px">Region exposure this week</h3>${['neck','wrists','back','shoulders'].map(k=>{const s=regStats(k,'week');return `<div class="hbar" style="grid-template-columns:90px 1fr 40px"><span>${REGIONS[k]}</span><div class="bar"><i style="width:${s.m+s.x}%;background:var(--warn)"></i></div><b>${s.m+s.x}%</b></div>`}).join('')}</div>
+ <div class="card flat"><h3 style="font-size:14px;margin-bottom:8px">Observed patterns</h3><ul style="margin:0;padding-left:18px;color:var(--ink-2)"><li>Afternoon rise in forward-head exposure</li><li>Average deep-work session 54 min</li><li>Wrist deviation during typing bursts</li></ul></div></div>
+ <div style="margin-top:14px"><label class="b tiny">Add a note for Alex</label><div style="display:flex;gap:8px;margin-top:6px"><input class="inp" id="noteinp" style="flex:1" placeholder="e.g. Try a 3-minute mobility break at 2:45 PM"><button class="btn pri" data-act="addNote">Send</button></div></div>
+ <p class="tiny muted" style="margin-top:12px">Ergonomic observations only. Not a diagnostic record.</p>`}
+
+/* ================= privacy ================= */
+function pgPrivacy(){const st=[['camera','Camera processing','Local / edge processing'],['eye','Raw video','Not retained'],['arch','Stored data','Ergonomic features only'],['lock','Personal data','Encrypted'],['settings','User control','Available']];
+ return head('Privacy by design','Workplace monitoring raises fair questions. ErgoSense is built so the answer to most of them is: that data never exists.')+
+ `<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(190px,1fr))">${st.map(s=>`<div class="card"><span class="fx-ico" style="background:var(--good-soft);color:var(--good);margin-bottom:10px">${ico(s[0])}</span><small class="muted">${s[1]}</small><div class="b" style="font-size:16px;font-family:var(--f-head)">${s[2]}</div></div>`).join('')}</div>
+ <div class="grid g-12" style="margin-top:16px;align-items:start"><div class="card"><div class="ch"><div><h3>What happens to a camera frame</h3><p>The prototype is designed around extracting ergonomic features rather than retaining continuous video.</p></div></div><div class="vflow">${['Camera','Pose extraction (on device)','Ergonomic features (angles, durations)','Raw frame discarded'].map((s,i,a)=>`<div class="node" style="cursor:default;${i===a.length-1?'border-color:var(--good);background:var(--good-soft);color:var(--good)':''}">${s}</div>${i<a.length-1?'<div class="ln"></div>':''}`).join('')}</div></div>
+ <div class="grid" style="gap:16px"><div class="card"><h3 style="margin-bottom:6px">Your controls</h3>${[['Process video only on this device',1,1],['Keep feature history for 90 days',1,0],['Share summaries with employer',0,0],['Share with care team',S.care.on?1:0,0]].map(r=>`<div class="row"><span>${r[0]}</span><button class="tgl ${r[1]?'on':''} ${r[2]?'lock':''}" ${r[0].startsWith('Share with care')?'data-act="careOn"':'data-act="privTgl"'} aria-label="${r[0]}"></button></div>`).join('')}<div style="margin-top:10px"><button class="btn sm" data-act="delData">${ico('trash')}Delete my stored data</button></div></div>
+ <div class="grid g2" style="gap:12px"><div class="card flat"><b>We store</b><ul style="margin:8px 0 0;padding-left:18px;color:var(--ink-2)"><li>Joint angles and durations</li><li>Activity category</li><li>Desk and monitor height</li></ul></div><div class="card flat"><b>We never store</b><ul style="margin:8px 0 0;padding-left:18px;color:var(--ink-2)"><li>Video or images</li><li>Screen contents or keystrokes</li><li>Audio</li></ul></div></div></div></div>`}
+
+/* ================= architecture ================= */
+const ARCH=[['Camera / IMU / desk sensors','Inputs from webcam, wearable IMU and height-adjustable desk'],['Data acquisition','ESP32 gateway timestamps and streams samples'],['Pose estimation','Body keypoints extracted on device'],['Activity recognition','Coding, meeting, reading, away'],['Feature extraction','Joint angles, durations, movement energy'],['Multimodal sensor fusion','Combines camera, IMU and desk signals'],['Ergonomic risk engine','ML-based risk classification'],['Personal baseline model','Learns your normal ranges'],['Intervention engine','Chooses the least disruptive action'],['User / workstation','Dashboard, notification, desk suggestion'],['Feedback loop','Outcomes update the baseline and rules']];
+const TECH=[['Frontend','React / Next.js'],['Styling','Tailwind CSS'],['Charts','Recharts'],['Backend','Python / FastAPI (mocked in this prototype)'],['AI','Pose estimation + ML-based risk classification'],['Hardware','ESP32 + sensors'],['Storage','PostgreSQL / mock JSON for prototype']];
+const TM=[['Pose detection confidence',94.2,'%'],['Activity classification confidence',91.8,'%'],['Risk classification confidence',89.6,'%'],['Sensor synchronization',98.7,'%'],['Data processing latency',142,' ms']];
+function pgArch(){const sel=S.archSel,sn=S.sensors;
+ return head('Technical architecture','For technical reviewers: how sensing becomes a personalized recommendation.')+
+ `<div class="grid g-12" style="align-items:start"><div class="card"><div class="ch"><div><h3>Pipeline</h3><p>Select a stage</p></div></div><div class="vflow">${ARCH.map((a,i)=>`<button class="node ${sel===i?'on':''}" data-act="arch" data-v="${i}">${a[0]}</button>${i<ARCH.length-1?'<div class="ln"></div>':''}`).join('')}</div></div>
+ <div style="display:grid;gap:16px"><div class="card"><div class="ch"><div><h3>${ARCH[sel][0]}</h3></div><span class="chip brand">Stage ${sel+1} of ${ARCH.length}</span></div><p style="color:var(--ink-2)">${ARCH[sel][1]}.</p></div>
+ <div class="card"><div class="ch"><div><h3>Technology</h3></div></div>${TECH.map(t=>`<div class="row" style="padding:9px 0"><span class="muted">${t[0]}</span><b style="text-align:right">${t[1]}</b></div>`).join('')}</div>
+ <div class="card"><div class="ch"><div><h3>Technical metrics</h3><p>Demonstration values only, not clinically validated</p></div><span class="chip warn">Prototype simulation</span></div><div class="grid g2" style="gap:10px">${TM.map(m=>`<div class="metric"><small>${m[0]}</small><b>${cnt(m[1],'int',m[2]).replace('data-fmt="int"','data-fmt="int"')}</b></div>`).join('')}</div></div>
+ <div class="card"><div class="ch"><div><h3>Sensor health</h3></div></div>${[['camera','Camera','Pose keypoints, 30 fps'],['imu','Wearable IMU','Torso and neck tilt'],['desk','Desk height sensor','ESP32, 10 Hz']].map(s=>`<div class="row" style="padding:10px 0"><div style="display:flex;gap:10px;align-items:center"><i class="dot ${sn[s[0]]?'':'off'}"></i><div><b>${s[1]}</b><p>${sn[s[0]]?s[2]:'Disconnected'}</p></div></div><button class="btn sm" data-act="toggleSensor" data-v="${s[0]}">${sn[s[0]]?'Simulate disconnect':'Reconnect'}</button></div>`).join('')}</div>
+ <div class="card"><div class="ch"><div><h3>Sample event record</h3></div><button class="btn sm" data-act="copyJson">Copy JSON</button></div><pre class="json" id="jsonsample">${JSON.stringify(events(DAYS[13]).find(e=>e.minute===872)&&(({id,day,minute,risk_score,contributor,...r})=>r)(events(DAYS[13]).find(e=>e.minute===872)),null,2)}</pre></div></div></div>`}
+
+/* ================= notifications + settings ================= */
+function notifsHTML(limit){let l=S.notifs.filter(n=>S.nf==='all'||n.t===S.nf);if(limit)l=l.slice(0,limit);
+ if(!l.length)return emptyState('check','You are all caught up','No notifications right now. ErgoSense will only message you when it has something useful to say.','good');
+ return l.map(n=>`<div class="notif"><span class="fx-ico" style="background:var(--${n.tone}-soft);color:var(--${n.tone==='brand'?'brand-ink':n.tone})">${ico(n.ico)}</span><div style="flex:1;min-width:0"><b>${n.title}${n.unread?' <i class="dot" style="display:inline-block;width:7px;height:7px;margin-left:4px"></i>':''}</b><p class="muted" style="margin-top:2px">${n.body}</p><small class="muted">${n.time}</small></div><button class="ib" style="width:30px;height:30px" data-act="dismiss" data-v="${n.id}" aria-label="Dismiss">${ico('x')}</button></div>`).join('')}
+function pgNotifs(){return head('Notification center','Informative, never alarming.',`<div class="seg">${[['all','All'],['insight','Insights'],['system','System']].map(x=>`<button class="${S.nf===x[0]?'on':''}" data-act="nf" data-v="${x[0]}">${x[1]}</button>`).join('')}<button class="btn sm" data-act="readAll" style="margin-left:8px">Mark all read</button>`)+`<div class="card" id="nlist">${notifsHTML()}</div>`}
+const STG={loading:['Loading analysis…','skel'],baseline:['Learning your baseline…','spin'],norisk:['No significant ergonomic risk detected','good'],nodata:['No data available for selected period','none'],report:['Report generation in progress…','spin'],camera:['Camera unavailable','warn'],sensor:['Sensor disconnected','warn']};
+function stateDemo(k){return {loading:`<div class="grid g3"><div class="skel" style="height:90px"></div><div class="skel" style="height:90px"></div><div class="skel" style="height:90px"></div></div><p class="muted" style="text-align:center;margin-top:12px">Loading analysis…</p>`,baseline:emptyState('baseline','Learning your baseline…','ErgoSense is still learning your normal ranges (9 of 14 days). Conservative defaults are in use.'),norisk:emptyState('check','No significant ergonomic risk detected','Your posture and movement stayed within your normal range for this period.','good'),nodata:emptyState('timeline','No data available for selected period','Sensors were offline during this range.'),report:`<div style="padding:30px;text-align:center"><span class="spin" style="margin:0 auto 12px;display:block;width:30px;height:30px"></span><b>Report generation in progress…</b><p class="muted">This usually takes a few seconds.</p></div>`,camera:emptyState('camera','Camera unavailable','Pose tracking is paused. Check the camera connection; IMU and desk sensors continue.','warn'),sensor:emptyState('sensor','Sensor disconnected','The wearable IMU stopped reporting. Reconnect it to restore movement estimates.','warn')}[k]}
+function pgSettings(){return head('Settings','Preferences and prototype tools.')+`<div class="grid g2" style="align-items:start"><div style="display:grid;gap:16px"><div class="card"><h3 style="margin-bottom:8px">Appearance</h3><div class="seg">${[['system','System'],['light','Light'],['dark','Dark']].map(x=>`<button class="${S.theme===x[0]?'on':''}" data-act="theme" data-v="${x[0]}">${x[1]}</button>`).join('')}</div></div>
+ <div class="card"><h3 style="margin-bottom:4px">Intervention sensitivity</h3><p class="muted tiny" style="margin-bottom:10px">How readily ErgoSense speaks up. Balanced is recommended.</p><div class="seg">${[['minimal','Minimal'],['balanced','Balanced'],['proactive','Proactive']].map(x=>`<button class="${S.sens===x[0]?'on':''}" data-act="sens" data-v="${x[0]}">${x[1]}</button>`).join('')}</div></div>
+ <div class="card"><h3 style="margin-bottom:6px">Notifications</h3>${[['Daily summary',1],['Weekly report ready',1],['Break suggestions',1],['Sensor status',0]].map(r=>`<div class="row"><span>${r[0]}</span><button class="tgl ${r[1]?'on':''}" data-act="privTgl" aria-label="${r[0]}"></button></div>`).join('')}</div></div>
+ <div style="display:grid;gap:16px"><div class="card"><div class="ch"><div><h3>System states</h3><p>Empty, loading and error states used across the app</p></div></div><div class="seg" style="margin-bottom:12px">${Object.keys(STG).map(k=>`<button class="${S.statesGal===k?'on':''}" data-act="states" data-v="${k}">${k==='norisk'?'No risk':k==='nodata'?'No data':k[0].toUpperCase()+k.slice(1)}</button>`).join('')}</div><div id="stg">${stateDemo(S.statesGal)}</div></div>
+ <div class="card"><h3 style="margin-bottom:6px">Prototype</h3><p class="muted tiny" style="margin-bottom:10px">All data is simulated.</p><button class="btn" data-act="reset">${ico('refresh')}Reset demo state</button></div></div></div>`}
+/* ================= router + shell ================= */
+const NAV=[['Workspace',[['overview','Overview'],['live','Live Monitor'],['posture','Posture Analysis'],['timeline','Risk Timeline'],['habits','Work Habits'],['recs','Recommendations'],['movement','Movement & Recovery'],['weekly','Weekly Plan'],['reports','Reports'],['workstation','Workstation'],['progress','Progress'],['settings','Settings']]],
+ ['Platform',[['engine','Adaptive Engine'],['baseline','Your Normal'],['care','Care Team'],['privacy','Privacy'],['arch','Architecture']]]];
+const PAGES={overview:{t:'Overview',r:pgOverview,m:mtOverview},live:{t:'Live Monitor',r:pgLive,m:mtLive},posture:{t:'Posture Analysis',r:pgPosture},timeline:{t:'Risk Timeline',r:pgTimeline,m:mtTimeline},habits:{t:'Work Habits',r:pgHabits,m:mtHabits},recs:{t:'Recommendations',r:pgRecs},movement:{t:'Movement & Recovery',r:pgMovement},weekly:{t:'Weekly Plan',r:pgWeekly},reports:{t:'Reports',r:pgReports,m:mtReports},workstation:{t:'Workstation',r:pgWs,m:mtWs},progress:{t:'Progress',r:pgProgress,m:mtProgress},settings:{t:'Settings',r:pgSettings},engine:{t:'Adaptive Engine',r:pgEngine},baseline:{t:'Your Normal',r:pgBaseline,m:mtBaseline},care:{t:'Care Team',r:pgCare},privacy:{t:'Privacy',r:pgPrivacy},arch:{t:'Architecture',r:pgArch,m:(a)=>animateCounters($('#page'),a)},notifications:{t:'Notifications',r:pgNotifs}};
+function shell(){
+ $('#side').innerHTML=`<div class="brand"><div class="logo">${ico('posture')}</div><div><b>ErgoSense AI</b><small>Personal ergonomic intelligence</small></div></div><nav class="nav" aria-label="Main">${NAV.map(g=>`<h6>${g[0]}</h6>${g[1].map(n=>`<button class="nav-i" data-act="nav" data-v="${n[0]}" data-r="${n[0]}">${ico(n[0]==='engine'?'engine':n[0])}<span>${n[1]}</span></button>`).join('')}`).join('')}</nav>
+ <div class="profile"><div class="avatar">AM</div><div><b>Alex Morgan</b><br><small>Software Developer</small></div><div class="pscore"><div style="display:flex;justify-content:space-between"><span>Ergonomic Risk Index</span><b>68/100</b></div><div class="bar"><i style="width:68%;background:var(--brand)"></i></div></div></div>`;
+ $('#top').innerHTML=`<button class="ib menu-b" data-act="menu" aria-label="Open menu">${ico('menu')}</button><b id="crumb" style="font:750 15px var(--f-head)">Overview</b><span class="grow"></span><span class="pill hide-m" id="sensorpill"></span><button class="btn dark sm" data-act="demo">${ico('play')}<span>Demo mode</span></button><div id="bellwrap" style="position:relative"><button class="ib" data-act="bell" aria-label="Notifications">${ico('bell')}<span class="n" id="nbadge"></span></button><div id="popwrap"></div></div><button class="ib" data-act="themeTgl" aria-label="Toggle theme">${ico('moon')}</button>`;
+ $('#disc').textContent='ErgoSense is a prototype ergonomic wellness and monitoring platform. It is not intended to diagnose, treat, cure, or prevent any medical condition. Recommendations are general ergonomic guidance and should not replace advice from a qualified healthcare professional or ergonomist.'}
+function chrome(){const on=Object.values(S.sensors).filter(Boolean).length;$('#sensorpill').innerHTML=`<i class="dot ${on===3?'':'warn'}"></i>${on}/3 sensors connected`;const u=S.notifs.filter(n=>n.unread).length,b=$('#nbadge');b.textContent=u;b.style.display=u?'grid':'none';
+ $$('.nav-i').forEach(b=>b.classList.toggle('on',b.dataset.r===S.route));$('#crumb').textContent=PAGES[S.route].t;document.title=PAGES[S.route].t+' · ErgoSense AI'}
+function draw(anim){const P=PAGES[S.route],pg=$('#page');try{pg.innerHTML=P.r();P.m&&P.m(anim)}catch(e){console.error(e);pg.innerHTML=emptyState('alert','Something went wrong','This view could not be drawn. Try another page.','warn')}if(anim)window.scrollTo(0,0)}
+function render(anim=true){clearInterval(S.liveT);clearTimeout(S.skT);chrome();if(anim){$('#page').innerHTML=skeleton();S.skT=setTimeout(()=>draw(true),320)}else draw(false)}
+function go(r){if(!PAGES[r])r='overview';S.route=r;S.side=false;$('#side').classList.remove('open');$('#sideov').classList.remove('open');try{history.replaceState(null,'','#/'+r)}catch(e){}render(true)}
+function applyTheme(){const r=document.documentElement;if(S.theme==='system')r.removeAttribute('data-theme');else r.setAttribute('data-theme',S.theme);try{localStorage.setItem('ergo-theme',S.theme)}catch(e){}}
+const soft=()=>render(false);
+
+/* ================= actions ================= */
+const ACT={
+nav:a=>go(a.dataset.v),
+period:a=>{S.period=a.dataset.v;S.evN=20;soft()},
+cat:a=>{S.cat=a.dataset.v;repaint('#catwrap',catHTML())},
+region:a=>{S.region=a.dataset.v;if(S.route==='posture')soft()},
+kpi:a=>{const k=KPIS[S.period].find(x=>x.k===a.dataset.v),notes={score:'A blend of posture quality, exposure duration, movement, break behaviour and workstation alignment, weighed against your personal baseline.',healthy:'The share of monitored time your posture stayed within your personal neutral range.',risk:'Total time spent in moderate or high estimated ergonomic risk. Lower is better.',break:'How often you moved or stepped away before your suggested interval ran out.',move:'How much position variety and movement you had compared with your baseline.',ws:'How closely your desk, monitor and keyboard match your personalized ranges.'};
+ modal(`<h2 style="font-size:22px">${k.l}</h2><div style="display:flex;gap:12px;align-items:baseline;margin:6px 0 14px"><span class="num" style="font-size:38px;font-weight:800">${k.f==='dur'?fmtH(k.v):k.v+(k.f==='pct'?'%':' / 100')}</span>${chipDelta(k.d,k.up)}<span class="muted">${k.c}</span></div><div id="km"></div><p style="color:var(--ink-2);margin-top:14px">${notes[k.k]}</p><p class="tiny muted" style="margin-top:8px">Estimated from sensor features. Not a clinical measure.</p>`);
+ lineChart($('#km'),{labels:Array.from({length:14},(_,i)=>DAYS[i].label),series:[{name:k.l,color:'#0A7C86',data:sparkFor('m'+k.k,k.v,14,k.inv?-.2:.16).map(v=>Math.round(v)),area:1}],h:220,fmt:k.f==='dur'?(v=>fmtH(v)):null})},
+fix:a=>{S.fix[a.dataset.v]=!S.fix[a.dataset.v];repaint('#loadcard',loadHTML())},
+rec:a=>{const id=a.dataset.v;S.recs[id]=!S.recs[id];S.fix[id]=!!S.recs[id];repaint('#recs',recsHTML());repaint('#recsum',recSummary());toast(S.recs[id]?'Marked as addressed. Risk load projection updated.':'Marked as open again.')},
+rp:a=>{S.rp=a.dataset.v;soft()},
+task:a=>{S.plan[a.dataset.v]=!S.plan[a.dataset.v];repaint('#plan',planHTML())},
+moveDone:a=>{S.moves[a.dataset.v]=!S.moves[a.dataset.v];if(S.route==='movement')soft();toast(S.moves[a.dataset.v]?'Movement completed and added to this week.':'Marked as incomplete.')},
+startRoutine:()=>{clearInterval(S.routine.iv);S.routine={step:0,sec:0,iv:null};modal(routineModal());S.routine.iv=setInterval(()=>{if(!$('#modal')){clearInterval(S.routine.iv);return}S.routine.sec++;if(S.routine.sec%30===0)S.routine.step++;if(S.routine.sec>=120){clearInterval(S.routine.iv);S.moves.chin=true;S.moves.thoracic=true;S.moves.wrist=true;modal(`<div style="text-align:center;padding:20px"><span class="fx-ico" style="background:var(--good-soft);color:var(--good);margin:0 auto 10px">${ico('check')}</span><h2>Reset complete</h2><p class="muted" style="margin:6px 0 16px">2 minutes recorded as a movement break. Your next report will include the completion.</p><button class="btn pri" data-act="closeRoutine">Done</button></div>`)}else repaint('#modal .modal',routineModal())},1000)},
+closeRoutine:()=>{clearInterval(S.routine.iv);S.routine.iv=null;closeModal()},
+
+regen:()=>{repaint('#plan',`<div class="grid g3"><div class="skel" style="height:260px"></div><div class="skel" style="height:260px"></div><div class="skel" style="height:260px"></div></div><p class="muted" style="text-align:center;margin-top:14px"><span class="spin" style="display:inline-block;vertical-align:middle;margin-right:8px"></span>Rebuilding from your latest 7 days…</p>`);setTimeout(()=>{repaint('#plan',planHTML());toast('Plan refreshed from your latest data.')},1400)},
+genRep:()=>{clearTimeout(S.repT);stepRep(0)},
+exportPdf:()=>{toast('Preparing PDF…');setTimeout(()=>toast('weekly-ergonomic-assessment-sep21-27.pdf ready (prototype, no file created)'),1200)},
+repShare:()=>{S.care.scope.reports=+!S.care.scope.reports;soft();toast(S.care.scope.reports?'Reports will be shared with your physiotherapist.':'Report sharing turned off.')},
+wsApply:()=>{S.wsApplied=!S.wsApplied;repaint('#wsw',wsHTML());mtWs()},
+wsSel:a=>{S.wsSel=a.dataset.v;repaint('#wsw',wsHTML());mtWs()},
+prog:a=>{S.prog=a.dataset.v;soft()},
+simctx:a=>{S.sim.ctx=a.dataset.v;repaint('#sim',simHTML())},
+simrec:()=>{S.sim.rec=!S.sim.rec;repaint('#sim',simHTML())},
+bl:a=>{S.baseline=a.dataset.v;soft()},
+careOn:()=>{S.care.on=!S.care.on;soft();toast(S.care.on?'Sharing with your physiotherapist is on.':'Sharing paused.')},
+careScope:a=>{S.care.scope[a.dataset.v]=+!S.care.scope[a.dataset.v];repaint('#care',careHTML())},
+clinician:()=>{modal(clinicianHTML());const el=$('#cl-rc');if(el)riskChart(el,{series:pSeries('week'),range:true,h:180})},
+addNote:()=>{const i=$('#noteinp');if(!i||!i.value.trim())return;S.note.unshift({by:'Dr. R. Iyer (physiotherapist)',t:i.value.trim()});i.value='';closeModal();if(S.route==='care')repaint('#care',careHTML());toast('Note sent to Alex.')},
+toast:a=>toast(a.dataset.v),
+privTgl:a=>{a.classList.toggle('on')},
+delData:()=>modal(`<h2 style="font-size:20px">Delete stored data?</h2><p style="color:var(--ink-2);margin:8px 0 16px">This would remove derived ergonomic features and reports. In this prototype nothing is actually deleted.</p><div style="display:flex;gap:10px"><button class="btn pri" data-act="closeModal">Keep my data</button><button class="btn" data-act="closeModal" data-toast="Deletion simulated. No data was changed.">Delete (simulated)</button></div>`),
+arch:a=>{S.archSel=+a.dataset.v;soft()},
+copyJson:()=>{const t=$('#jsonsample').textContent;try{navigator.clipboard.writeText(t).then(()=>toast('JSON copied'),()=>toast('Copy blocked in this preview. Select the text manually.'))}catch(e){toast('Copy blocked in this preview. Select the text manually.')}},
+dismiss:a=>{S.notifs=S.notifs.filter(n=>n.id!=a.dataset.v);chrome();if(S.route==='notifications')repaint('#nlist',notifsHTML());else repaint('#popwrap',popHTML())},
+nf:a=>{S.nf=a.dataset.v;soft()},
+readAll:()=>{S.notifs.forEach(n=>n.unread=0);chrome();soft()},
+theme:a=>{S.theme=a.dataset.v;applyTheme();soft()},
+themeTgl:()=>{const dark=document.documentElement.dataset.theme==='dark'||(S.theme==='system'&&matchMedia('(prefers-color-scheme: dark)').matches);S.theme=dark?'light':'dark';applyTheme();soft()},
+sens:a=>{S.sens=a.dataset.v;soft()},
+states:a=>{S.statesGal=a.dataset.v;soft()},
+reset:()=>{Object.assign(S,{fix:{},recs:{},plan:{},moves:{chin:false,thoracic:false,wrist:false,reset:false},routine:{step:0,sec:0,iv:null},notifs:NOTIFS0.map(n=>({...n})),wsApplied:false,sensors:{camera:1,imu:1,desk:1},baseline:'established',rep:'idle',live:null,pf:'all',rf:'all',lf:'all',period:'today'});chrome();soft();toast('Demo state reset.')},
+rawEvt:a=>{const e=Object.values(EVENTS).flat().find(x=>x.id===a.dataset.v);if(!e)return;const {id,day,minute,risk_score,contributor,...r}=e;modal(`<h2 style="font-size:20px;margin-bottom:10px">Raw event record</h2><pre class="json">${JSON.stringify(r,null,2)}</pre>`)},
+moreEv:()=>{S.evN+=20;repaint('#evlog',logHTML(pEvents(S.period),PERIODS[S.period].days.length>1))},
+toggleSensor:a=>{const k=a.dataset.v;S.sensors[k]=+!S.sensors[k];chrome();soft();toast(S.sensors[k]?'Sensor reconnected.':'Sensor disconnected (simulated).')},
+closeModal:a=>{if(a&&a.dataset.toast)toast(a.dataset.toast);closeModal()},
+menu:()=>{S.side=!S.side;$('#side').classList.toggle('open',S.side);$('#sideov').classList.toggle('open',S.side)},
+bell:()=>{S.pop=!S.pop;repaint('#popwrap',popHTML())},
+demo:()=>openDemo()};
+const popHTML=()=>S.pop?`<div class="pop"><div style="display:flex;justify-content:space-between;align-items:center;padding:2px 6px 8px"><b>Notifications</b><button class="btn sm" data-act="nav" data-v="notifications">View all</button></div>${notifsHTML(3)}</div>`:'';
+document.addEventListener('click',e=>{const a=e.target.closest('[data-act]');if(S.pop&&!e.target.closest('#bellwrap')){S.pop=false;repaint('#popwrap','')}if(!a)return;const f=ACT[a.dataset.act];if(f){if(a.dataset.act==='nav'&&S.pop){S.pop=false;repaint('#popwrap','')}f(a,e)}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();if($('#demo'))closeDemo();S.pop=false;repaint('#popwrap','')}if((e.key==='Enter'||e.key===' ')&&e.target.matches&&e.target.matches('.rg')){e.preventDefault();e.target.dispatchEvent(new MouseEvent('click',{bubbles:true}))}});
+document.addEventListener('change',e=>{const k=e.target.dataset.chg;if(!k)return;S[k]=e.target.value;S.evN=20;repaint('#evlog',logHTML(pEvents(S.period),PERIODS[S.period].days.length>1))});
+document.addEventListener('input',e=>{const k=e.target.dataset.inp;if(!k)return;S.sim[k]=+e.target.value;const a=e.target.selectionStart;repaint('#sim',simHTML());const n=$(`[data-inp="${k}"]`);if(n)n.focus()});
+let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{if(!$('#demo'))render(false)},200)});
+
+/* ================= demo mode ================= */
+const STEP_MS=4600;
+const DSTEPS=[
+{t:'User begins working',d:'Sensors sync and a session starts.',neck:14,torso:5,risk:12,raise:0,log:['Session started. Camera, IMU and desk sensors synced.']},
+{t:'Neutral posture',d:'Head, neck and torso are within Alex\'s normal range.',neck:16,torso:6,risk:14,raise:0,log:['Posture neutral: neck 16° against a baseline of 22° ± 6°.']},
+{t:'User gradually slouches',d:'Neck and torso lean forward as focus deepens.',neck:28,torso:15,risk:34,raise:0,log:['Neck drifting to 28°, torso lean 15°.']},
+{t:'Risk increases',d:'The estimated risk climbs into the moderate range.',neck:36,torso:22,risk:58,raise:0,log:['Risk estimate rising: 34 → 58 (moderate).']},
+{t:'Sustained deviation detected',d:'The posture has been held for over 3 minutes.',neck:38,torso:23,risk:68,raise:0,log:['Deviation sustained for 3m 12s. Threshold exceeded.']},
+{t:'System checks context',d:'What is Alex doing, and what is the usual pattern?',neck:38,torso:23,risk:68,raise:0,log:['Task: coding (deep focus). Last break 52 minutes ago.','Monitor is about 4 cm below eye level.','Same pattern seen on 5 of the last 7 days.']},
+{t:'Recommendation appears',d:'The quietest useful intervention is chosen.',neck:38,torso:23,risk:66,raise:0,rec:1,log:['Decision: Level 2 subtle visual cue. Haptic held back because of deep focus.','Follow-up: Level 4 workstation adjustment suggested.']},
+{t:'User corrects workstation',d:'Alex raises the monitor about 4 cm.',neck:26,torso:13,risk:48,raise:1,rec:1,log:['Desk sensor confirms monitor height +4 cm.']},
+{t:'Risk decreases',d:'Posture settles back toward the personal baseline.',neck:17,torso:6,risk:20,raise:1,log:['Risk falling: 48 → 20. Neck 17°.']},
+{t:'Dashboard records improvement',d:'The change is logged and the baseline keeps learning.',neck:15,torso:5,risk:14,raise:1,res:1,log:['Recorded: forward-head exposure −6 min today. Added to your learning baseline.']}];
+const D={t:0,playing:true,step:-1,hist:[],iv:null};
+const ease=p=>1-Math.pow(1-p,3);
+function openDemo(){closeDemo();Object.assign(D,{t:0,playing:true,step:-1,hist:[]});const el=document.createElement('div');el.className='demo';el.id='demo';
+ el.innerHTML=`<div class="wrap"><div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap;margin-bottom:18px"><div><span class="chip brand">Presentation mode · simulated scenario</span><h1 style="font-size:28px;margin-top:8px" id="d-title">Sense. Understand. Adapt. Learn.</h1><p class="muted" id="d-desc" style="margin-top:4px">Follow a 45-second scenario of a real working session.</p></div>
+ <div style="display:flex;gap:8px"><button class="btn" data-dm="play" id="d-play">${ico('pause')}<span>Pause</span></button><button class="btn" data-dm="restart">${ico('refresh')}Restart</button><button class="btn dark" data-dm="close">${ico('x')}Close</button></div></div>
+ <div class="grid g3" style="align-items:start"><div class="card"><div class="ch"><div><h3>Live posture</h3></div><span class="chip good" id="d-chip">Risk: Low</span></div>${figureSVG('dm-fig')}<div class="grid g3" style="gap:8px;margin-top:8px"><div class="metric"><small>Neck angle</small><b id="d-neck">14°</b></div><div class="metric"><small>Torso angle</small><b id="d-torso">5°</b></div><div class="metric"><small>Risk score</small><b id="d-risk">12</b></div></div></div>
+ <div style="display:grid;gap:16px"><div class="card"><div class="ch"><div><h3>Estimated risk over the scenario</h3></div></div><div id="d-chart"></div></div><div class="card"><div class="ch"><div><h3>Engine reasoning</h3></div></div><div class="log" id="d-log"></div></div></div>
+ <div style="display:grid;gap:16px"><div class="card"><div id="d-steps">${DSTEPS.map((s,i)=>`<div class="dstep" id="ds${i}"><span class="k">${i+1}</span><div><b>${s.t}</b><small>${s.d}</small></div></div>`).join('')}</div></div><div id="d-rec"></div><div id="d-res"></div></div></div>
+ <p class="tiny muted" style="text-align:center;margin-top:18px">All values in this scenario are simulated for demonstration.</p></div>`;
+ document.body.appendChild(el);el.addEventListener('click',e=>{const b=e.target.closest('[data-dm]');if(!b)return;const k=b.dataset.dm;if(k==='close')closeDemo();if(k==='restart'){Object.assign(D,{t:0,playing:true,step:-1,hist:[]});$('#d-log').innerHTML='';$('#d-rec').innerHTML='';$('#d-res').innerHTML='';setPlay()}if(k==='play'){if(D.t>=DSTEPS.length*STEP_MS-1){Object.assign(D,{t:0,step:-1,hist:[]});$('#d-log').innerHTML='';$('#d-rec').innerHTML='';$('#d-res').innerHTML=''}D.playing=!D.playing;setPlay()}});
+ setFigure('dm-fig',{neck:12,torso:4,raise:0});clearInterval(D.iv);D.iv=setInterval(demoTick,100);demoTick()}
+function setPlay(){const b=$('#d-play');if(b)b.innerHTML=D.playing?`${ico('pause')}<span>Pause</span>`:`${ico('play')}<span>${D.t>=DSTEPS.length*STEP_MS-1?'Replay':'Play'}</span>`}
+function closeDemo(){clearInterval(D.iv);const e=$('#demo');if(e)e.remove()}
+function enterStep(i){D.step=i;const s=DSTEPS[i];$$('.dstep').forEach((n,j)=>{n.classList.toggle('act',j===i);n.classList.toggle('done',j<i)});$('#d-title').textContent=s.t;$('#d-desc').textContent=s.d;
+ const lg=$('#d-log');s.log.forEach(m=>{const d=document.createElement('div');d.textContent=m;lg.prepend(d)});
+ $('#d-rec').innerHTML=s.rec?`<div class="card" style="border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-soft)"><span class="ai-tag">${ico('spark')}Recommendation <span class="chip">Confidence high</span></span><h3 style="margin:6px 0">Raise your monitor about 4 cm</h3><p style="color:var(--ink-2)">Forward-head posture is repeating while you code. A slightly higher screen keeps your head over your shoulders.</p></div>`:'';
+ $('#d-res').innerHTML=s.res?`<div class="card" style="background:var(--good-soft);border-color:transparent"><b style="color:var(--good)">${ico('check')} Improvement recorded</b><div class="grid g3" style="gap:8px;margin-top:10px"><div class="metric"><small>Risk Index</small><b>68 → 66</b></div><div class="metric"><small>Forward head</small><b>−6 min</b></div><div class="metric"><small>Risk load</small><b>47 → 41</b></div></div></div>`:''}
+function demoTick(){if(!$('#demo'))return clearInterval(D.iv);if(!D.playing)return;D.t+=100;const total=DSTEPS.length*STEP_MS;if(D.t>=total){D.t=total-1;D.playing=false;setPlay()}
+ const i=Math.floor(D.t/STEP_MS),fr=(D.t%STEP_MS)/STEP_MS;if(i!==D.step)enterStep(i);const cur=DSTEPS[i],prev=DSTEPS[Math.max(0,i-1)],p=i===0?1:ease(Math.min(1,fr/.65)),L=k=>prev[k]+(cur[k]-prev[k])*p;
+ const risk=Math.round(L('risk')),neck=L('neck'),torso=L('torso');setFigure('dm-fig',{neck:neck*.85,torso:torso*.8,raise:L('raise'),color:riskCol(risk)});
+ const set=(id,v)=>{const e=$('#'+id);if(e)e.textContent=v};set('d-neck',Math.round(neck)+'°');set('d-torso',Math.round(torso)+'°');set('d-risk',risk);const c=$('#d-chip');c.className='chip '+LVL[lvl(risk)].c;c.textContent='Risk: '+LVL[lvl(risk)].t;
+ if(D.t%200===0)D.hist.push([D.t,risk]);
+ const W=$('#d-chart').clientWidth||360,H=190,X=t=>34+t/total*(W-46),Y=v=>10+(1-v/100)*(H-30);
+ $('#d-chart').innerHTML=`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" class="axis"><rect x="34" y="${Y(100)}" width="${W-46}" height="${Y(65)-Y(100)}" fill="var(--bad)" opacity=".07"/><rect x="34" y="${Y(65)}" width="${W-46}" height="${Y(35)-Y(65)}" fill="var(--warn)" opacity=".07"/><rect x="34" y="${Y(35)}" width="${W-46}" height="${Y(0)-Y(35)}" fill="var(--good)" opacity=".07"/><text x="28" y="${Y(82)+4}" text-anchor="end">High</text><text x="28" y="${Y(50)+4}" text-anchor="end">Mod</text><text x="28" y="${Y(17)+4}" text-anchor="end">Low</text><path d="${D.hist.map((h,j)=>(j?'L':'M')+X(h[0]).toFixed(1)+' '+Y(h[1]).toFixed(1)).join('')}" style="fill:none;stroke:${riskCol(risk)};stroke-width:3;stroke-linecap:round;stroke-linejoin:round"/><circle cx="${X(D.t)}" cy="${Y(risk)}" r="5" style="fill:var(--surface);stroke:${riskCol(risk)};stroke-width:2.5"/></svg>`}
+
+/* ================= init ================= */
+function init(){try{const t=localStorage.getItem('ergo-theme');if(t)S.theme=t}catch(e){}applyTheme();shell();const h=(location.hash||'').replace('#/','');if(PAGES[h])S.route=h;render(true)}
+init();
+</script></body></html>
